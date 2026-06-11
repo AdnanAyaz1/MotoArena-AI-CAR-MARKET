@@ -125,8 +125,8 @@ export default function CreateCarPage() {
     const validated = carFormSchema.safeParse(formData);
     if (!validated.success) {
       const fieldErrors: Record<string, string> = {};
-      validated.error.flatten().fieldErrors.forEach((msgs, key) => {
-        if (msgs.length) fieldErrors[key] = msgs[0];
+      Object.entries(validated.error.flatten().fieldErrors).forEach(([key, msgs]) => {
+        if (msgs && msgs.length) fieldErrors[key] = msgs[0];
       });
       setErrors(fieldErrors);
       toast.error("Please fix the errors in the form");

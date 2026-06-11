@@ -40,7 +40,7 @@ export const serializeCarData = (car: Car, wishlisted = false) => {
   };
 };
 
-export const inputClass = (error?: boolean) => {
+export const inputClass = (error?: boolean | string) => {
   return `w-full px-4 py-3 rounded-xl border bg-white/[0.02] text-on-surface font-[family-name:var(--font-jakarta)] text-sm placeholder:text-on-surface-variant/30 focus:border-primary/50 hover:bg-white/[0.04] focus:bg-white/[0.04] transition-all duration-300 outline-none ${
     error ? "border-red-500/50" : "border-white/[0.06]"
   }`;
