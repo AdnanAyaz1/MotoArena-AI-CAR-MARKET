@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String             @unique
+  imageUrl          String?
+  phone             String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  role              UserRole           @default(USER)
+  password          String?
+  provider          String             @default("credentials")
+  username          String             @unique
+  providerAccountId String?
+  testDrives        TestDriveBooking[]
+  savedCars         UserSavedCar[]
+}
+
+model Car {
+  id                String             @id @default(uuid())
+  model             String
+  year              Int
+  price             Float
+  mileage           Int
+  color             String
+  fuelType          String
+  transmission      String
+  bodyType          String
+  seats             Int?
+  description       String
+  status            CarStatus          @default(AVAILABLE)
+  featured          Boolean            @default(false)
+  images            String[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  company           String
+  testDriveBookings TestDriveBooking[]
+  savedBy           UserSavedCar[]
+
+  @@index([company, model])
+  @@index([bodyType])
+  @@index([price])
+  @@index([year])
+  @@index([status])
+  @@index([fuelType])
+  @@index([featured])
+}
+
+model DealershipInfo {
+  id           String        @id @default(uuid())
+  name         String        @default("Vehiql Motors")
+  address      String        @default("69 Car Street, Autoville, CA 69420")
+  phone        String        @default("+1 (555) 123-4567")
+  email        String        @default("contact@vehiql.com")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  workingHours WorkingHour[]
+}
+
+model WorkingHour {
+  id           String         @id @default(uuid())
+  dealershipId String
+  dayOfWeek    DayOfWeek
+  openTime     String
+  closeTime    String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  isClosed     Boolean        @default(false)
+  dealership   DealershipInfo @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+
+  @@unique([dealershipId, dayOfWeek])
+  @@index([dealershipId])
+  @@index([dayOfWeek])
+  @@index([isClosed])
+}
+
+model UserSavedCar {
+  id      String   @id @default(uuid())
+  userId  String
+  carId   String
+  savedAt DateTime @default(now())
+  car     Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, carId])
+  @@index([userId])
+  @@index([carId])
+}
+
+model TestDriveBooking {
+  id          String        @id @default(uuid())
+  carId       String
+  userId      String
+  bookingDate DateTime      @db.Date
+  startTime   String
+  endTime     String
+  status      BookingStatus @default(PENDING)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  car         Car           @relation(fields: [carId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+
+  @@index([carId])
+  @@index([userId])
+  @@index([bookingDate])
+  @@index([status])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum CarStatus {
+  AVAILABLE
+  UNAVAILABLE
+  SOLD
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
