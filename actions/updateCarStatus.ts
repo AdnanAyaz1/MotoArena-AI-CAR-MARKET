@@ -3,7 +3,7 @@
 import { handleActionError, serverActionResponse } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
 import { CarStatus } from "@prisma/client/edge";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateCarStatus = async (
   carId: string,
@@ -18,6 +18,7 @@ export const updateCarStatus = async (
       },
     });
     revalidatePath("/admin/cars");
+    revalidateTag("featured-cars"); // <-- refreshes the landing page cache
     return serverActionResponse(
       "Car status updated successfully",
       true,
