@@ -3,7 +3,7 @@ import { unstable_cache } from "next/cache";
 
 export const getFeaturedCars = unstable_cache(
   async () => {
-    const cars = await db.car.findMany({
+    return db.car.findMany({
       where: {
         featured: true,
       },
@@ -11,8 +11,9 @@ export const getFeaturedCars = unstable_cache(
         savedBy: true,
       },
     });
-    return cars;
   },
   ["featured-cars"],
-  { tags: ["featured-cars"] }
+  {
+    tags: ["featured-cars"],
+  }
 );

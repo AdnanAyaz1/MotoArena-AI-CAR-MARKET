@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { Heart } from "lucide-react";
@@ -18,6 +18,13 @@ const ToggleCar = ({ car }: { car: ExtendedCar }) => {
   );
   const [isSaved, setIsSaved] = useState(isSavedInitialState);
   const [isToggling, setIsToggling] = useState(false);
+
+  useEffect(() => {
+    const saved = (savedCars as UserSavedCar[])?.some(
+      (saveCar) => saveCar?.userId === session.data?.user?.id
+    );
+    setIsSaved(saved);
+  }, [session.data?.user?.id, savedCars]);
 
   const handleToggleSave = async () => {
     setIsToggling(true);
