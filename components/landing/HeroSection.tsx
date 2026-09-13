@@ -6,7 +6,12 @@ import Image from "next/image";
 
 
 import { GlowOrb, DotGrid, TechnicalChip } from "@/components/design-system";
-import { HeroTitle, HeroSubtitle, HeroSearch } from "@/components/Hero/HeroReveal";
+import {
+  HeroTitle,
+  HeroSubtitle,
+  HeroSearch,
+  HeroSectionContainer,
+} from "@/components/Hero/HeroReveal";
 import { HomeSearch } from "@/components/Hero/HomeSearch";
 import { StatsBar } from "@/components/StatsBar";
 
@@ -18,8 +23,9 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-bl from-[#0e1417]/40 via-[#0e1417]/10 to-[#0e1417]/70 z-10" />
         <Image
           alt="Hero Supercar"
-          src="https://res.cloudinary.com/drlzlx6tg/image/upload/v1789327573/screen_ahapit.png"
+          src="https://res.cloudinary.com/drlzlx6tg/image/upload/f_auto,q_auto,w_2560/v1789327573/screen_ahapit.png"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />
@@ -37,7 +43,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 z-[15] bg-[radial-gradient(ellipse_at_center,rgba(10,14,24,0.85)_0%,rgba(10,14,24,0.5)_50%,transparent_80%)]" />
 
       {/* Hero Content Container */}
-      <div className="relative z-20 flex flex-col items-center px-5 md:px-20 max-w-5xl text-center pt-20">
+      <HeroSectionContainer className="relative z-20 flex flex-col items-center px-5 md:px-20 max-w-5xl text-center pt-20">
         {/* Badge */}
         <HeroSearch>
           <TechnicalChip variant="default" className="mb-8">
@@ -67,7 +73,7 @@ export const HeroSection = () => {
 
         {/* Stats Row */}
         <StatsBar />
-      </div>
+      </HeroSectionContainer>
 
       {/* Scroll Indicator */}
       <motion.div

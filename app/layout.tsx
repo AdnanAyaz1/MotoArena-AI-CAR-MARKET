@@ -37,6 +37,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
+      </head>
       <SessionProvider>
         <body
           className={`${jakarta.variable} ${sora.variable} ${jetbrainsMono.variable} antialiased`}
