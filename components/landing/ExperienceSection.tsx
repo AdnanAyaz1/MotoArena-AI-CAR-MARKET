@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ShieldCheck, Headphones, Shield, Zap, ArrowUpRight } from "lucide-react";
 
 import { CountingNumber } from "@/components/CountingNumber";
@@ -38,7 +38,7 @@ const features = [
   },
 ];
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.97, filter: "blur(4px)" },
   visible: (i: number) => ({
     opacity: 1,

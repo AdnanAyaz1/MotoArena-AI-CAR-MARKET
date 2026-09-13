@@ -8,17 +8,22 @@ import {
   FAQSection,
 } from "@/components/landing";
 
-export default async function Home() {
-  const featuredCars = await getFeaturedCars();
+import { Suspense } from "react";
 
+export default function Home() {
   return (
     <div className="flex flex-col">
       <HeroSection />
-      <FeaturedCarsSection cars={featuredCars} />
+      <FeaturedCars />
       <ExperienceSection />
       <TestimonialsSlider />
       <FAQSection />
       <NewsletterCTA />
     </div>
   );
+}
+
+async function FeaturedCars() {
+  const cars = await getFeaturedCars();
+  return <FeaturedCarsSection cars={cars} />;
 }

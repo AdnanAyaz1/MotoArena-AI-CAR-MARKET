@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -13,7 +13,7 @@ interface FeaturedCarsSectionProps {
   cars: ExtendedCar[];
 }
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -24,7 +24,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98, filter: "blur(4px)" },
   visible: {
     opacity: 1,

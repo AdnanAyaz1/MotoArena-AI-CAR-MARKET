@@ -4,7 +4,6 @@ import { Plus_Jakarta_Sans, Sora, JetBrains_Mono } from "next/font/google";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer, Bounce } from "react-toastify";
-import SplashScreen from "@/components/SplashScreen";
 
 import "./globals.css";
 
@@ -44,7 +43,6 @@ export default async function RootLayout({
         <body
           className={`${jakarta.variable} ${sora.variable} ${jetbrainsMono.variable} antialiased`}
         >
-          <SplashScreen />
           {children}
           <ToastContainer
             position="top-right"
