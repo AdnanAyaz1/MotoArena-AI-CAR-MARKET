@@ -18,7 +18,7 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-bl from-[#0e1417]/40 via-[#0e1417]/10 to-[#0e1417]/70 z-10" />
         <Image
           alt="Hero Supercar"
-          src="/images/screen.png"
+          src="https://res.cloudinary.com/drlzlx6tg/image/upload/v1789327573/screen_ahapit.png"
           fill
           className="object-cover"
           priority

@@ -64,17 +64,14 @@ export const TestimonialsSlider = () => {
     enter: (direction: number) => ({
       x: direction > 0 ? 80 : -80,
       opacity: 0,
-      filter: "blur(4px)",
     }),
     center: {
       x: 0,
       opacity: 1,
-      filter: "blur(0px)",
     },
     exit: (direction: number) => ({
       x: direction < 0 ? 80 : -80,
       opacity: 0,
-      filter: "blur(4px)",
     }),
   };
 

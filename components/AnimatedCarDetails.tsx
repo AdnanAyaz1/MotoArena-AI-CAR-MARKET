@@ -125,8 +125,8 @@ const AnimatedCarDetails = ({
           <div className="lg:col-span-2 space-y-8">
             {/* Image Gallery Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -140,8 +140,8 @@ const AnimatedCarDetails = ({
 
             {/* Description Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -160,8 +160,8 @@ const AnimatedCarDetails = ({
 
             {/* Features Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -202,8 +202,8 @@ const AnimatedCarDetails = ({
 
             {/* Specifications Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -241,8 +241,8 @@ const AnimatedCarDetails = ({
           <div className="space-y-6">
             {/* Quick Stats Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -283,8 +283,8 @@ const AnimatedCarDetails = ({
 
             {/* Actions Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
@@ -324,8 +324,8 @@ const AnimatedCarDetails = ({
 
             {/* Dealer Info Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"

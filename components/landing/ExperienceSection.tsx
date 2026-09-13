@@ -39,12 +39,11 @@ const features = [
 ];
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.97, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 30, scale: 0.97 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
       duration: 0.6,
       delay: i * 0.12,

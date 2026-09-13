@@ -27,8 +27,8 @@ export const HeroReveal = ({ children, className }: HeroRevealProps) => {
 export const HeroTitle = ({ children, className }: HeroRevealProps) => {
   return (
     <motion.h1
-      initial={{ y: 30, filter: "blur(8px)" }}
-      animate={{ y: 0, filter: "blur(0px)" }}
+      initial={{ y: 30 }}
+      animate={{ y: 0 }}
       transition={{
         duration: 0.9,
         delay: 0.15,
