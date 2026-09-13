@@ -16,7 +16,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0e1417]/60 via-[#0e1417]/20 to-[#0e1417] z-10" />
         <Image
           alt="Hero Supercar"
-          src="/screen.png"
+          src="/images/screen.png"
           fill
           className="object-cover"
           priority
