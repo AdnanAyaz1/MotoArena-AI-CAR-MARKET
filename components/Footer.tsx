@@ -59,9 +59,9 @@ export const Footer = () => {
 
           {/* Marketplace Links */}
           <div>
-            <h5 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
+            <h2 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
               Marketplace
-            </h5>
+            </h2>
             <ul className="flex flex-col gap-4">
               {footerLinks.marketplace.map((link) => (
                 <li key={link.label}>
@@ -78,9 +78,9 @@ export const Footer = () => {
 
           {/* Experience Links */}
           <div>
-            <h5 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
+            <h2 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
               Experience
-            </h5>
+            </h2>
             <ul className="flex flex-col gap-4">
               {footerLinks.experience.map((link) => (
                 <li key={link.label}>
@@ -97,9 +97,9 @@ export const Footer = () => {
 
           {/* Company Links */}
           <div>
-            <h5 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
+            <h2 className="text-white font-bold mb-6 uppercase text-xs tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
               Company
-            </h5>
+            </h2>
             <ul className="flex flex-col gap-4">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>

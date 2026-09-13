@@ -168,12 +168,14 @@ export const TestimonialsSlider = () => {
           >
             <button
               onClick={prev}
+              aria-label="Previous testimonial"
               className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
             >
               <ArrowLeft className="w-5 h-5 text-on-surface" />
             </button>
             <button
               onClick={next}
+              aria-label="Next testimonial"
               className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
             >
               <ArrowRight className="w-5 h-5 text-on-surface" />
@@ -186,6 +188,8 @@ export const TestimonialsSlider = () => {
                     setDirection(i > current ? 1 : -1);
                     setCurrent(i);
                   }}
+                  aria-label={`Go to testimonial ${i + 1}`}
+                  aria-current={i === current ? "true" : undefined}
                   className={`h-2 rounded-full transition-all duration-400 ${
                     i === current
                       ? "bg-primary w-8 shadow-lg shadow-primary/30"

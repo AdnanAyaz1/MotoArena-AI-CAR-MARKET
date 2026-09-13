@@ -111,6 +111,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
           {!isAdminPage && (
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               className="lg:hidden p-2 rounded-full hover:bg-white/5 transition-colors"
             >
               {isMobileMenuOpen ? (
