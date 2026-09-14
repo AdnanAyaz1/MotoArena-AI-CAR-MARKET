@@ -2,7 +2,7 @@
 
 import { Heart, Share2, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCurrentUser } from "@/actions/getCurrentUser";
 import { toast } from "react-toastify";
 import { saveCar } from "@/actions/saveCar";
@@ -26,6 +26,13 @@ const CarImageGallery = ({ car }: CarImageGalleryProps) => {
     isWishlistedInitialState
   );
   const [savingCar, setSavingCar] = useState(false);
+
+  useEffect(() => {
+    const wishlisted = (car.savedBy as UserSavedCar[]).some(
+      (savedCar) => savedCar.userId === session.data?.user?.id
+    );
+    setIsWishlisted(wishlisted);
+  }, [session.data?.user?.id, car.savedBy]);
 
   const handleSaveCar = async () => {
     setSavingCar(true);

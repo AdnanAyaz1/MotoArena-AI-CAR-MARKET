@@ -31,9 +31,8 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled ? "nav-scrolled" : "bg-transparent"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? "nav-scrolled" : "bg-transparent"
+        }`}
     >
       <div className="flex justify-between items-center px-5 md:px-20 py-6 max-w-[1440px] mx-auto">
         {/* Brand Logo */}
@@ -53,7 +52,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
           ) : (
             <div className="flex items-center gap-2">
               <Image
-                src="/logo-white.png"
+                src="https://res.cloudinary.com/drlzlx6tg/image/upload/v1789327692/logo-white_m2e8fu.png"
                 alt="Motoverse"
                 width={100}
                 height={40}
@@ -112,6 +111,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
           {!isAdminPage && (
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               className="lg:hidden p-2 rounded-full hover:bg-white/5 transition-colors"
             >
               {isMobileMenuOpen ? (

@@ -35,8 +35,8 @@ const StatCard = ({
   trend?: "up" | "down";
 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     className="group relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:bg-white/[0.03] hover:border-white/[0.12] transition-all duration-500"
   >

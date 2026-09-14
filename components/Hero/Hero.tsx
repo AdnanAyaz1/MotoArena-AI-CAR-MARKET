@@ -5,7 +5,7 @@ import React from "react";
 
 import { StatsBar } from "@/components/StatsBar";
 
-import { HeroTitle, HeroSubtitle, HeroSearch } from "./HeroReveal";
+import { HeroTitle, HeroSubtitle, HeroSearch, HeroSectionContainer } from "./HeroReveal";
 import { HomeSearch } from "./HomeSearch";
 
 const Hero = () => {
@@ -16,10 +16,11 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0e1417]/60 via-[#0e1417]/20 to-[#0e1417] z-10" />
         <Image
           alt="Hero Supercar"
-          src="/screen.png"
+          src="/images/screen.png"
           fill
           className="object-cover"
           priority
+          quality={60}
         />
       </div>
 
@@ -31,7 +32,7 @@ const Hero = () => {
       <div className="fixed inset-0 dot-grid pointer-events-none z-10 opacity-50" />
 
       {/* Hero Content Container */}
-      <div className="relative z-20 flex flex-col items-center px-5 md:px-20 max-w-5xl text-center pt-20">
+      <HeroSectionContainer className="relative z-20 flex flex-col items-center px-5 md:px-20 max-w-5xl text-center pt-20">
         {/* Badge */}
         <HeroSearch>
           <div className="mb-8 flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md">
@@ -63,7 +64,7 @@ const Hero = () => {
 
         {/* Stats Row */}
         <StatsBar />
-      </div>
+      </HeroSectionContainer>
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center opacity-60">

@@ -386,8 +386,8 @@ const CarsList = () => {
             onClick={() => setDeleteDialogOpen(false)}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative z-10 w-full max-w-md"
           >

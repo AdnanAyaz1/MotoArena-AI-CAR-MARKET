@@ -1,5 +1,5 @@
 import { getAdminTestDrives } from "@/actions/getTestDriveBookings";
-import { SearchParams } from "@/app/(root)/cars/page";
+import { SearchParams } from "@/app/(public)/cars/page";
 import { TestDrivesList } from "@/components/TestDriveList";
 import { ExtendedTestDriveBooking } from "@/types/types";
 import React from "react";

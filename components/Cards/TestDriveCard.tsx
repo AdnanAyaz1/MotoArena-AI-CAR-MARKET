@@ -115,8 +115,8 @@ export function TestDriveCard({
     return (
       <>
         <motion.div
-          initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className={`group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.12] transition-all duration-500 ${
             isPast ? "opacity-50 hover:opacity-100" : ""
@@ -280,9 +280,9 @@ export function TestDriveCard({
                 onClick={() => setCancelDialogOpen(false)}
               />
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="relative z-10 w-full max-w-sm"
               >
@@ -361,8 +361,8 @@ export function TestDriveCard({
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className={`group relative rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:bg-white/[0.03] hover:border-white/[0.12] transition-all duration-500 ${
           isPast ? "opacity-60 hover:opacity-100" : ""
@@ -547,9 +547,9 @@ export function TestDriveCard({
               onClick={() => setCancelDialogOpen(false)}
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="relative z-10 w-full max-w-md"
             >
