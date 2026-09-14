@@ -23,7 +23,7 @@ export const NewsletterCTA = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-transparent to-secondary/[0.04] opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
         {/* Corner accents */}
         <div className="absolute -top-24 -right-24 w-72 h-72 bg-primary/[0.06] rounded-full blur-[100px]" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-secondary/[0.05] rounded-full blur-[100px]" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-secondary/[0.05] rounded-full blur-[90px]" />
         {/* Top accent line */}
         <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
