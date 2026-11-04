@@ -699,21 +699,74 @@ const cars = [
   },
 ];
 
+const carGalleryPool = [
+  "/cars/bmw-m8.png",
+  "/cars/porsche-cayenne.png",
+  "/cars/rolls-royce-ghost.png",
+  "/cars/mercedes-amg-gt.png",
+  "/cars/mclaren-720s.png",
+  "/cars/porsche-911-gt3.png",
+  "/cars/ferrari-sf90.png",
+  "/cars/hyundai-ioniq-5.png",
+  "/cars/audi-rs-e-tron-gt.png",
+  "/cars/mclaren-750s.png",
+  "/cars/lamborghini-aventador.png",
+  "/cars/maserati-levante.png",
+  "/cars/aston-martin-db12.png",
+  "/cars/toyota-supra.png",
+  "/cars/honda-civic-type-r.png",
+  "/cars/rivian-r1t.png",
+  "/cars/bugatti-chiron.png",
+  "/cars/bentley-continental-gt.png",
+  "/cars/lexus-lc-500.png",
+  "/cars/1.png",
+  "/cars/2.webp",
+  "/cars/3.jpg",
+];
+
 async function main() {
+  console.log("Connecting to database...");
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      await prisma.$connect();
+      break;
+    } catch (err) {
+      if (attempt === 5) throw err;
+      console.log(`Connection attempt ${attempt} failed, retrying in 2 seconds...`);
+      await new Promise((res) => setTimeout(res, 2000));
+    }
+  }
+
   console.log("Seeding database...");
 
-  for (const car of cars) {
+  for (let i = 0; i < cars.length; i++) {
+    const car = cars[i];
+    const coverImage = car.images[0];
+    const otherImages = carGalleryPool.filter((img) => img !== coverImage);
+    const carImages = [
+      coverImage,
+      otherImages[i % otherImages.length],
+      otherImages[(i + 1) % otherImages.length],
+      otherImages[(i + 2) % otherImages.length],
+      otherImages[(i + 3) % otherImages.length],
+    ];
+
+    const carData = {
+      ...car,
+      images: carImages,
+    };
+
     await prisma.car.upsert({
       where: {
         id: car.model.toLowerCase().replace(/\s+/g, "-"),
       },
-      update: car,
+      update: carData,
       create: {
         id: car.model.toLowerCase().replace(/\s+/g, "-"),
-        ...car,
+        ...carData,
       },
     });
-    console.log(`Created: ${car.company} ${car.model}`);
+    console.log(`Created/Updated: ${car.company} ${car.model} with ${carImages.length} images`);
   }
 
   console.log(`Seeded ${cars.length} cars`);
