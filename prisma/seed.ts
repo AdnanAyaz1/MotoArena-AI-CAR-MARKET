@@ -717,6 +717,31 @@ async function main() {
   }
 
   console.log(`Seeded ${cars.length} cars`);
+
+  console.log("Seeding dealership info...");
+  const existingDealer = await prisma.dealershipInfo.findFirst();
+  if (!existingDealer) {
+    await prisma.dealershipInfo.create({
+      data: {
+        name: "Motoverse Luxury Motors",
+        address: "69 Car Street, Autoville, CA 69420",
+        phone: "+1 (555) 123-4567",
+        email: "contact@motoverse.com",
+        workingHours: {
+          create: [
+            { dayOfWeek: "MONDAY", openTime: "09:00", closeTime: "18:00" },
+            { dayOfWeek: "TUESDAY", openTime: "09:00", closeTime: "18:00" },
+            { dayOfWeek: "WEDNESDAY", openTime: "09:00", closeTime: "18:00" },
+            { dayOfWeek: "THURSDAY", openTime: "09:00", closeTime: "18:00" },
+            { dayOfWeek: "FRIDAY", openTime: "09:00", closeTime: "18:00" },
+            { dayOfWeek: "SATURDAY", openTime: "10:00", closeTime: "16:00" },
+            { dayOfWeek: "SUNDAY", openTime: "10:00", closeTime: "16:00" },
+          ],
+        },
+      },
+    });
+    console.log("Created dealership and working hours");
+  }
 }
 
 main()
