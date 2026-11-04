@@ -52,11 +52,12 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
           ) : (
             <div className="flex items-center gap-2">
               <Image
-                src="/MotoVerse Sports Car Emblem.png"
+                src="/logo.png"
                 alt="Motoverse"
-                width={120}
+                width={140}
                 height={40}
                 priority
+                unoptimized
                 className="h-9 w-auto object-contain"
               />
             </div>

@@ -26,6 +26,9 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Motoverse",
+  icons: {
+    icon: "/logo.png",
+  },
     description:
       "Motoverse - Your premier marketplace for buying and selling automobiles. Find your perfect vehicle or list your car for sale in our trusted automotive community.",
 };
