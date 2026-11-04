@@ -27,7 +27,7 @@ export const NewsletterCTA = () => {
         {/* Top accent line */}
         <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-        <div className="relative z-10 p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12">
+        <div className="relative z-10 p-6 sm:p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
           <div className="max-w-lg">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -47,7 +47,7 @@ export const NewsletterCTA = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="font-[family-name:var(--font-sora)] text-[32px] md:text-[40px] uppercase tracking-tight font-bold text-on-surface mb-4 leading-tight"
+              className="font-[family-name:var(--font-sora)] text-2xl sm:text-[32px] md:text-[40px] uppercase tracking-tight font-bold text-on-surface mb-4 leading-tight"
             >
               Join the{" "}
               <span className="gradient-text">Inner Circle</span>

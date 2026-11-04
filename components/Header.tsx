@@ -35,7 +35,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
         isScrolled ? "nav-scrolled" : "bg-transparent"
       }`}
     >
-      <div className="flex justify-between items-center px-5 md:px-20 py-6 max-w-[1440px] mx-auto">
+      <div className="flex justify-between items-center px-4 sm:px-6 md:px-20 py-4 md:py-6 max-w-[1440px] mx-auto">
         {/* Brand Logo */}
         <Link
           href={isAdminPage ? "/admin" : "/"}
@@ -59,7 +59,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
                 height={40}
                 priority
                 unoptimized
-                className="h-9 w-auto object-contain"
+                className="h-8 sm:h-9 w-auto object-contain"
               />
             </div>
           )}
@@ -81,10 +81,10 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
         )}
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {isAdminPage ? (
             <Link href="/">
-              <Button className="bg-white/5 px-8 py-2.5 rounded-full font-semibold text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md">
+              <Button className="bg-white/5 px-4 sm:px-8 py-2 sm:py-2.5 rounded-full font-semibold text-sm sm:text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md">
                 Back to App
               </Button>
             </Link>
@@ -92,7 +92,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
             <>
               {isAdmin && (
                 <Link href="/admin">
-                  <Button className="bg-white/5 px-8 py-2.5 rounded-full font-semibold text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md hidden md:flex">
+                  <Button className="bg-white/5 px-4 sm:px-8 py-2 sm:py-2.5 rounded-full font-semibold text-sm sm:text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md hidden md:flex">
                     Admin Portal
                   </Button>
                 </Link>
@@ -100,7 +100,7 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
 
               {!user ? (
                 <Link href="/sign-in">
-                  <Button className="bg-white/5 px-8 py-2.5 rounded-full font-semibold text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md">
+                  <Button className="bg-white/5 px-4 sm:px-8 py-2 sm:py-2.5 rounded-full font-semibold text-sm sm:text-base text-on-surface hover:bg-white/10 transition-all duration-200 border border-white/10 backdrop-blur-md">
                     Sign In
                   </Button>
                 </Link>

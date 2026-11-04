@@ -54,7 +54,7 @@ export const FeaturedCarsSection = ({ cars }: FeaturedCarsSectionProps) => {
               Inventory
             </span>
           </div>
-          <h2 className="font-[family-name:var(--font-sora)] text-[32px] md:text-[48px] font-bold text-on-surface uppercase tracking-tight">
+          <h2 className="font-[family-name:var(--font-sora)] text-2xl sm:text-[32px] md:text-[48px] font-bold text-on-surface uppercase tracking-tight">
             Masterpieces in{" "}
             <span className="gradient-text">Motion</span>
           </h2>
@@ -88,7 +88,7 @@ export const FeaturedCarsSection = ({ cars }: FeaturedCarsSectionProps) => {
                 <div className="absolute -top-20 -right-20 w-60 h-60 bg-primary/[0.04] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                 <div className="relative z-10 flex flex-col lg:flex-row">
-                  <div className="w-full lg:w-2/3 h-[350px] lg:h-[420px] relative overflow-hidden">
+                  <div className="w-full lg:w-2/3 h-[220px] sm:h-[350px] lg:h-[420px] relative overflow-hidden">
                     {mainCar.images && mainCar.images.length > 0 ? (
                       <CarImage
                         src={mainCar.images[0]}
@@ -105,7 +105,7 @@ export const FeaturedCarsSection = ({ cars }: FeaturedCarsSectionProps) => {
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-surface/80 hidden lg:block" />
                   </div>
 
-                  <div className="w-full lg:w-1/3 p-8 lg:p-10 flex flex-col justify-between">
+                  <div className="w-full lg:w-1/3 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -168,7 +168,7 @@ export const FeaturedCarsSection = ({ cars }: FeaturedCarsSectionProps) => {
                   <div className={`absolute -top-20 -right-20 w-48 h-48 ${index === 0 ? "bg-secondary/[0.04]" : "bg-primary/[0.04]"} rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
 
                   <div className="relative z-10 flex flex-col lg:flex-row">
-                    <div className="w-full lg:w-3/5 h-[280px] lg:h-[300px] relative overflow-hidden">
+                    <div className="w-full lg:w-3/5 h-[200px] sm:h-[280px] lg:h-[300px] relative overflow-hidden">
                       {car.images && car.images.length > 0 ? (
                         <CarImage
                           src={car.images[0]}
@@ -184,7 +184,7 @@ export const FeaturedCarsSection = ({ cars }: FeaturedCarsSectionProps) => {
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-surface/60 hidden lg:block" />
                     </div>
 
-                    <div className="w-full lg:w-2/5 p-6 lg:p-8 flex flex-col justify-between">
+                    <div className="w-full lg:w-2/5 p-5 sm:p-6 lg:p-8 flex flex-col justify-between">
                       <div>
                         <div className="flex justify-between items-start mb-3">
                           <div>

@@ -43,7 +43,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 z-[15] bg-[radial-gradient(ellipse_at_center,rgba(10,14,24,0.85)_0%,rgba(10,14,24,0.5)_50%,transparent_80%)]" />
 
       {/* Hero Content Container */}
-      <HeroSectionContainer className="relative z-20 flex flex-col items-center px-5 md:px-20 max-w-5xl text-center pt-20">
+      <HeroSectionContainer className="relative z-20 flex flex-col items-center px-4 sm:px-6 md:px-20 max-w-5xl text-center pt-28 sm:pt-32 md:pt-36 pb-12 sm:pb-16">
         {/* Badge */}
         <HeroSearch>
           <TechnicalChip variant="default" className="mb-8">
@@ -53,12 +53,12 @@ export const HeroSection = () => {
         </HeroSearch>
 
         {/* Title */}
-        <HeroTitle className="font-[family-name:var(--font-sora)] text-4xl md:text-8xl font-extrabold text-white mb-8 leading-[0.95] tracking-tighter uppercase">
+        <HeroTitle className="font-[family-name:var(--font-sora)] text-3xl sm:text-5xl md:text-8xl font-extrabold text-white mb-6 sm:mb-8 leading-[1.05] sm:leading-[0.95] tracking-tight sm:tracking-tighter uppercase">
           Find Your <span className="gradient-text">Dream</span> Machine
         </HeroTitle>
 
         {/* Subtitle */}
-        <HeroSubtitle className="font-[family-name:var(--font-jakarta)] text-lg text-white/80 max-w-2xl mb-12 leading-relaxed">
+        <HeroSubtitle className="font-[family-name:var(--font-jakarta)] text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mb-8 sm:mb-12 leading-relaxed px-2">
           The world&apos;s most exclusive marketplace for performance vehicles and
           rare collectors&apos; items. Engineered for those who demand more than
           just transportation.

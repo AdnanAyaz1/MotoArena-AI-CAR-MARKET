@@ -36,7 +36,7 @@ export const StatsBar = () => {
   return (
     <motion.div
       variants={statsBarVariants}
-      className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-16 w-full"
+      className="mt-8 sm:mt-16 grid grid-cols-3 gap-2 sm:gap-8 md:gap-16 w-full"
     >
       {stats.map((stat, index) => (
         <motion.div
@@ -44,7 +44,7 @@ export const StatsBar = () => {
           variants={statItemVariants}
           className="flex flex-col items-center group"
         >
-          <span className="font-[family-name:var(--font-sora)] text-4xl md:text-5xl font-semibold gradient-text">
+          <span className="font-[family-name:var(--font-sora)] text-2xl sm:text-4xl md:text-5xl font-semibold gradient-text">
             <CountingNumber
               target={stat.value}
               suffix={stat.suffix}
@@ -53,7 +53,7 @@ export const StatsBar = () => {
               delay={0.1 + index * 0.06}
             />
           </span>
-          <span className="font-[family-name:var(--font-jetbrains-mono)] text-[11px] text-outline uppercase tracking-widest mt-2">
+          <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] sm:text-[11px] text-outline uppercase tracking-wider sm:tracking-widest mt-1 sm:mt-2 text-center">
             {stat.label}
           </span>
         </motion.div>

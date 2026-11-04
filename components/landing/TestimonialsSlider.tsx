@@ -79,7 +79,7 @@ export const TestimonialsSlider = () => {
 
   return (
     <SectionContainer>
-      <div className="flex flex-col lg:flex-row gap-16 items-center">
+      <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
         {/* Left - Testimonial Content + Controls */}
         <div className="lg:w-1/2 w-full">
           <motion.div
@@ -101,7 +101,7 @@ export const TestimonialsSlider = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-[family-name:var(--font-sora)] text-[32px] md:text-[40px] text-on-surface mb-8 font-bold"
+            className="font-[family-name:var(--font-sora)] text-2xl sm:text-[32px] md:text-[40px] text-on-surface mb-6 sm:mb-8 font-bold"
           >
             Voice of the{" "}
             <span className="gradient-text">Collection</span>
@@ -113,7 +113,7 @@ export const TestimonialsSlider = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden min-h-[320px]"
+            className="relative overflow-hidden min-h-[260px] sm:min-h-[320px]"
           >
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -125,18 +125,18 @@ export const TestimonialsSlider = () => {
                 exit="exit"
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-10 overflow-hidden">
+                <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-10 overflow-hidden">
                   {/* Card glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-transparent" />
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-primary/[0.04] rounded-full blur-[50px]" />
 
-                  <Quote className="absolute top-6 left-8 w-12 h-12 text-primary/20" />
-                  <p className="italic text-xl text-on-surface-variant leading-relaxed mb-8 font-[family-name:var(--font-jakarta)] relative z-10">
+                  <Quote className="absolute top-4 left-4 sm:top-6 sm:left-8 w-8 h-8 sm:w-12 sm:h-12 text-primary/20" />
+                  <p className="italic text-base sm:text-xl text-on-surface-variant leading-relaxed mb-6 sm:mb-8 font-[family-name:var(--font-jakarta)] relative z-10 pt-2 sm:pt-0">
                     &ldquo;{t.quote}&rdquo;
                   </p>
 
-                  <div className="flex items-center gap-4 relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/10">
+                  <div className="flex items-center gap-3 sm:gap-4 relative z-10">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/10 flex-shrink-0">
                       <span className="font-[family-name:var(--font-sora)] text-sm font-bold text-primary">
                         {t.author
                           .split(" ")
@@ -145,10 +145,10 @@ export const TestimonialsSlider = () => {
                       </span>
                     </div>
                     <div>
-                      <p className="text-on-surface font-bold text-lg font-[family-name:var(--font-jakarta)]">
+                      <p className="text-on-surface font-bold text-base sm:text-lg font-[family-name:var(--font-jakarta)]">
                         {t.author}
                       </p>
-                      <p className="text-outline text-sm uppercase tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
+                      <p className="text-outline text-xs sm:text-sm uppercase tracking-widest font-[family-name:var(--font-jetbrains-mono)]">
                         {t.role}
                       </p>
                     </div>
@@ -164,23 +164,23 @@ export const TestimonialsSlider = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-4 mt-6"
+            className="flex items-center gap-3 sm:gap-4 mt-6"
           >
             <button
               onClick={prev}
               aria-label="Previous testimonial"
-              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
             >
-              <ArrowLeft className="w-5 h-5 text-on-surface" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-on-surface" />
             </button>
             <button
               onClick={next}
               aria-label="Next testimonial"
-              className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all duration-300 hover:border-white/20"
             >
-              <ArrowRight className="w-5 h-5 text-on-surface" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-on-surface" />
             </button>
-            <div className="flex gap-2 ml-4">
+            <div className="flex gap-2 ml-3 sm:ml-4">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -211,28 +211,28 @@ export const TestimonialsSlider = () => {
             delay: 0.2,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="lg:w-1/2 relative"
+          className="lg:w-1/2 w-full relative sm:pr-6 sm:pb-6"
         >
           <div className="relative rounded-3xl border border-white/[0.06] overflow-hidden bg-white/[0.02] p-4">
             {/* Card glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-secondary/[0.03]" />
             <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-primary/[0.04] rounded-full blur-[80px]" />
 
-            <div className="relative aspect-square bg-gradient-to-br from-surface-container to-surface flex items-center justify-center rounded-2xl overflow-hidden">
+            <div className="relative aspect-[4/3] sm:aspect-square bg-gradient-to-br from-surface-container to-surface flex items-center justify-center rounded-2xl overflow-hidden p-6">
               <div className="text-center">
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.5, type: "spring", stiffness: 200 }}
-                  className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/10"
+                  className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-primary/10"
                 >
-                  <Star className="w-10 h-10 text-primary" />
+                  <Star className="w-7 h-7 sm:w-10 sm:h-10 text-primary" />
                 </motion.div>
-                <p className="text-on-surface font-[family-name:var(--font-sora)] text-xl font-bold">
+                <p className="text-on-surface font-[family-name:var(--font-sora)] text-base sm:text-xl font-bold">
                   Trusted by
                 </p>
-                <p className="text-on-surface font-[family-name:var(--font-sora)] text-3xl font-extrabold gradient-text">
+                <p className="text-on-surface font-[family-name:var(--font-sora)] text-2xl sm:text-3xl font-extrabold gradient-text">
                   <CountingNumber target={2000} suffix="+" duration={2.5} delay={0.8} /> Collectors
                 </p>
               </div>
@@ -245,14 +245,14 @@ export const TestimonialsSlider = () => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute -bottom-8 -right-8 w-48 h-48 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl flex flex-col items-center justify-center text-center p-4 z-10 overflow-hidden"
+            className="mt-4 sm:mt-0 sm:absolute sm:-bottom-4 sm:-right-4 md:-bottom-8 md:-right-8 w-full sm:w-48 sm:h-48 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl flex flex-col items-center justify-center text-center p-4 z-10 overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] to-transparent" />
             <div className="relative z-10">
-              <GradientText className="font-[family-name:var(--font-sora)] text-3xl font-bold">
+              <GradientText className="font-[family-name:var(--font-sora)] text-2xl sm:text-3xl font-bold">
                 <CountingNumber target={4.9} suffix="/5" decimals={1} duration={2} delay={1} />
               </GradientText>
-              <div className="flex text-secondary my-2 justify-center">
+              <div className="flex text-secondary my-1.5 sm:my-2 justify-center">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}

@@ -17,7 +17,7 @@ export const SectionContainer = ({
     <section
       className={cn(
         "relative z-20",
-        withPadding && "py-[64px] md:py-[128px] px-5 md:px-16",
+        withPadding && "py-[48px] sm:py-[64px] md:py-[128px] px-4 sm:px-6 md:px-16",
         "max-w-[1440px] mx-auto",
         className
       )}

@@ -79,7 +79,7 @@ export const FAQSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
@@ -90,7 +90,7 @@ export const FAQSection = () => {
             </span>
             <div className="h-px w-12 gradient-bg" />
           </div>
-          <h2 className="font-[family-name:var(--font-sora)] text-[32px] md:text-[48px] font-bold text-on-surface mb-4 tracking-tight">
+          <h2 className="font-[family-name:var(--font-sora)] text-2xl sm:text-[32px] md:text-[48px] font-bold text-on-surface mb-4 tracking-tight">
             Got <span className="gradient-text">Questions</span>?
           </h2>
           <p className="text-on-surface-variant font-[family-name:var(--font-jakarta)] text-lg">

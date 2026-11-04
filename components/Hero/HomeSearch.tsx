@@ -111,8 +111,8 @@ export function HomeSearch() {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      <div className="glass-card rounded-none p-2.5 flex items-center shadow-2xl mb-4 max-w-5xl mx-auto">
-        <div className="flex items-center flex-1 px-8">
+      <div className="glass-card rounded-none p-2 sm:p-2.5 flex flex-col sm:flex-row items-stretch sm:items-center shadow-2xl mb-4 max-w-5xl mx-auto gap-2 sm:gap-0">
+        <div className="flex items-center flex-1 px-3 sm:px-8">
           {searchState === "text" ? (
             <Loader2 className="w-6 h-6 text-primary animate-spin mr-4 flex-shrink-0" />
           ) : (
@@ -125,7 +125,7 @@ export function HomeSearch() {
             disabled={isSearching}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-white/50 font-[family-name:var(--font-inter)] text-lg py-5 outline-none disabled:opacity-60"
+            className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-white/50 font-[family-name:var(--font-inter)] text-sm sm:text-lg py-3 sm:py-5 outline-none disabled:opacity-60"
           />
           <input
             type="file"
@@ -156,7 +156,7 @@ export function HomeSearch() {
         <Button
           onClick={handleTextSearch}
           disabled={isSearching || (!searchTerm.trim() && searchState === "idle")}
-          className="gradient-bg text-on-primary-fixed px-12 py-7 rounded-none font-bold text-lg hover:brightness-110 transition-all duration-300 shadow-lg shadow-primary/20 disabled:opacity-70 flex items-center gap-2"
+          className="gradient-bg text-on-primary-fixed w-full sm:w-auto px-6 sm:px-12 py-3.5 sm:py-7 rounded-none font-bold text-base sm:text-lg hover:brightness-110 transition-all duration-300 shadow-lg shadow-primary/20 disabled:opacity-70 flex items-center justify-center gap-2"
         >
           {isSearching ? (
             <>
