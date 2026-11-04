@@ -31,8 +31,9 @@ const Header = ({ isAdminPage = false, user }: HeaderProps) => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? "nav-scrolled" : "bg-transparent"
-        }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled ? "nav-scrolled" : "bg-transparent"
+      }`}
     >
       <div className="flex justify-between items-center px-5 md:px-20 py-6 max-w-[1440px] mx-auto">
         {/* Brand Logo */}

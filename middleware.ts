@@ -7,6 +7,20 @@ const { auth } = NextAuth(authConfig);
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
+
+  // Allow static files and assets from public folder
+  const isStaticAsset =
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/cars") ||
+    pathname.startsWith("/body") ||
+    pathname.startsWith("/icons") ||
+    pathname.startsWith("/make") ||
+    pathname.startsWith("/images") ||
+    /\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|woff2?|ttf|txt|xml)$/i.test(pathname);
+
+  if (isStaticAsset) {
+    return NextResponse.next();
+  }
   
   const isAuthPage = pathname.startsWith("/sign-in") || 
                      pathname.startsWith("/sign-up");
@@ -44,6 +58,6 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|public/|robots.txt|sitemap.xml).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff2?|ttf)$).*)",
   ],
 };
