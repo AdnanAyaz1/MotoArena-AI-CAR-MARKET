@@ -4,10 +4,10 @@ import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/lib/prismadb";
 import bcrypt from "bcryptjs";
+import { authConfig } from "@/auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  trustHost: true,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  ...authConfig,
   providers: [
     Google({
       clientId:
@@ -51,10 +51,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return {
           id: user.id,
-          // email: user.email,
-          // name: user.username,
-          // imageUrl: user.imageUrl,
-          // provider: "credentials",
         };
       },
     }),
