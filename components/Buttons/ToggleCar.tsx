@@ -1,14 +1,12 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
-import { Heart } from "lucide-react";
+import { Loader2, Heart } from "lucide-react";
 import { saveCar } from "@/actions/saveCar";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { ExtendedCar } from "@/types/types";
 import { UserSavedCar } from "@prisma/client";
-
 
 const ToggleCar = ({ car }: { car: ExtendedCar }) => {
   const session = useSession();
@@ -26,7 +24,9 @@ const ToggleCar = ({ car }: { car: ExtendedCar }) => {
     setIsSaved(saved);
   }, [session.data?.user?.id, savedCars]);
 
-  const handleToggleSave = async () => {
+  const handleToggleSave = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsToggling(true);
     try {
       const user = session.data?.user;
@@ -46,25 +46,29 @@ const ToggleCar = ({ car }: { car: ExtendedCar }) => {
       setIsToggling(false);
     }
   };
+
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className={`absolute top-1.5 right-1.5 bg-gray-100 rounded-full p-1 ${
-        isSaved
-          ? "text-red-500 hover:text-red-600"
-          : "text-gray-600 hover:text-gray-900"
-      }`}
+    <button
+      type="button"
       onClick={handleToggleSave}
       disabled={isToggling}
-      name="toggle-car"
+      aria-label={isSaved ? "Remove from saved cars" : "Save car"}
+      className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-300 shadow-md ${
+        isSaved
+          ? "bg-red-500/15 border-red-500/30 text-red-500 hover:bg-red-500/25 hover:border-red-500/50 hover:scale-105"
+          : "bg-black/50 border-white/10 text-white/70 hover:text-white hover:bg-black/70 hover:border-white/25 hover:scale-105"
+      } disabled:opacity-60`}
     >
       {isToggling ? (
-        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        <Loader2 className="h-4 w-4 animate-spin text-primary" />
       ) : (
-        <Heart className={isSaved ? "fill-current" : ""} size={16} />
+        <Heart
+          className={`h-4 w-4 transition-transform active:scale-75 ${
+            isSaved ? "fill-red-500 text-red-500" : ""
+          }`}
+        />
       )}
-    </Button>
+    </button>
   );
 };
 
