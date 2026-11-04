@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, Loader2 } from "lucide-react";
+import { useFilterContext } from "@/components/Filters/FilterContext";
 
 interface CarsPageHeaderProps {
   search?: string;
@@ -9,6 +10,8 @@ interface CarsPageHeaderProps {
 }
 
 const CarsPageHeader = ({ search, totalCars }: CarsPageHeaderProps) => {
+  const { isPending } = useFilterContext();
+
   return (
     <div className="relative overflow-hidden border-b border-white/[0.06]">
       {/* Background gradient mesh */}
@@ -73,7 +76,7 @@ const CarsPageHeader = ({ search, totalCars }: CarsPageHeaderProps) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-6 mt-8"
+          className="flex flex-wrap items-center gap-4 mt-8"
         >
           <div className="flex items-center gap-2 text-on-surface-variant">
             <SlidersHorizontal className="w-4 h-4" />
@@ -81,6 +84,13 @@ const CarsPageHeader = ({ search, totalCars }: CarsPageHeaderProps) => {
               {totalCars} vehicle{totalCars !== 1 ? "s" : ""} found
             </span>
           </div>
+
+          {isPending && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-[family-name:var(--font-jetbrains-mono)] uppercase tracking-wider animate-pulse">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <span>Updating results...</span>
+            </div>
+          )}
         </motion.div>
       </div>
     </div>

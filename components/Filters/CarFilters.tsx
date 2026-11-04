@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { SlidersHorizontal, RotateCcw, ChevronDown, Loader2 } from "lucide-react";
-import { useState, useEffect, useRef, useTransition } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useFilterContext } from "./FilterContext";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import CompanyFilter from "./FilterComponents/CompanyFilter";
 import BodyTypeFilter from "./FilterComponents/BodyTypeFilter";
@@ -25,7 +26,7 @@ export interface CarFiltersProps {
 const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const { isPending, applyFilter } = useFilterContext();
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [sortBy, setSortBy] = useState(searchParams.get("sort") || "oldest");
@@ -61,13 +62,7 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
     const query = currentParams.toString();
     const newUrl = query ? `?${query}` : window.location.pathname;
 
-    // 1. Instant 0ms browser URL bar update
-    window.history.replaceState(null, "", newUrl);
-
-    // 2. Non-blocking background transition for Next.js Server Component fetch
-    startTransition(() => {
-      router.replace(newUrl, { scroll: false });
-    });
+    applyFilter(newUrl);
   };
 
   const handleCompanyFilter = (value: string) => {
@@ -148,11 +143,7 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
     const query = currentParams.toString();
     const newUrl = query ? `?${query}` : window.location.pathname;
 
-    window.history.replaceState(null, "", newUrl);
-
-    startTransition(() => {
-      router.replace(newUrl, { scroll: false });
-    });
+    applyFilter(newUrl);
   };
 
   const sortOptions = [
@@ -220,12 +211,16 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
             <button className="flex items-center gap-2 px-5 py-3 rounded-xl border border-white/[0.08] bg-white/[0.03] text-on-surface font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300">
               <SlidersHorizontal className="h-4 w-4" />
               Filters
-              {activeFilterCount > 0 && (
+              {isPending ? (
+                <span className="ml-1 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-[10px] font-bold text-primary animate-pulse">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  Applying
+                </span>
+              ) : activeFilterCount > 0 ? (
                 <span className="ml-1 w-5 h-5 rounded-full gradient-bg text-black text-[10px] font-bold flex items-center justify-center">
                   {activeFilterCount}
                 </span>
-              )}
-              {isPending && <Loader2 className="w-3.5 h-3.5 text-primary animate-spin ml-1" />}
+              ) : null}
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:max-w-md overflow-y-auto bg-[#0e1417] border-white/[0.06]">
@@ -233,9 +228,9 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
               <SheetTitle className="text-on-surface font-[family-name:var(--font-sora)] text-lg flex items-center justify-between">
                 <span>Filters</span>
                 {isPending && (
-                  <span className="flex items-center gap-1.5 text-xs text-primary font-[family-name:var(--font-jetbrains-mono)]">
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                    Updating
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/30 text-xs text-primary font-[family-name:var(--font-jetbrains-mono)] animate-pulse">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    Applying filters...
                   </span>
                 )}
               </SheetTitle>
@@ -290,21 +285,22 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
                 <span className="font-[family-name:var(--font-sora)] text-sm font-bold text-on-surface">
                   Filters
                 </span>
-                {activeFilterCount > 0 && (
+                {isPending ? (
+                  <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-[10px] font-bold text-primary font-[family-name:var(--font-jetbrains-mono)] uppercase tracking-wider animate-pulse">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Applying
+                  </span>
+                ) : activeFilterCount > 0 ? (
                   <span className="w-5 h-5 rounded-full gradient-bg text-black text-[10px] font-bold flex items-center justify-center">
                     {activeFilterCount}
                   </span>
-                )}
-                {isPending && (
-                  <span className="flex items-center gap-1 text-[11px] text-primary font-[family-name:var(--font-jetbrains-mono)] animate-pulse ml-1">
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                  </span>
-                )}
+                ) : null}
               </div>
               {activeFilterCount > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="flex items-center gap-1 text-xs text-on-surface-variant hover:text-primary transition-colors font-[family-name:var(--font-jetbrains-mono)] uppercase tracking-wider"
+                  disabled={isPending}
+                  className="flex items-center gap-1 text-xs text-on-surface-variant hover:text-primary transition-colors font-[family-name:var(--font-jetbrains-mono)] uppercase tracking-wider disabled:opacity-40"
                 >
                   <RotateCcw className="w-3 h-3" />
                   Reset

@@ -1,36 +1,36 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
-import { useTransition } from "react";
+import { X, Loader2 } from "lucide-react";
+import { useFilterContext } from "./FilterContext";
 
 interface ClearSearchButtonsProps {
   search: string;
 }
 
 const ClearSearchButtons = ({ search }: ClearSearchButtonsProps) => {
-  const router = useRouter();
-  const [, startTransition] = useTransition();
+  const { applyFilter, isPending } = useFilterContext();
 
   const handleClearSearch = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete("search");
     params.delete("page");
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
-    window.history.replaceState(null, "", newUrl);
-    startTransition(() => {
-      router.replace(newUrl, { scroll: false });
-    });
+    applyFilter(newUrl);
   };
 
   return (
     <div className="flex justify-center gap-4">
       <button
         onClick={handleClearSearch}
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/[0.10] bg-white/[0.03] text-on-surface font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300"
+        disabled={isPending}
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/[0.10] bg-white/[0.03] text-on-surface font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest hover:bg-white/[0.06] hover:border-white/[0.15] transition-all duration-300 disabled:opacity-50"
       >
-        <X className="w-4 h-4" />
-        Clear Search
+        {isPending ? (
+          <Loader2 className="w-4 h-4 text-primary animate-spin" />
+        ) : (
+          <X className="w-4 h-4" />
+        )}
+        {isPending ? "Clearing..." : "Clear Search"}
       </button>
     </div>
   );
