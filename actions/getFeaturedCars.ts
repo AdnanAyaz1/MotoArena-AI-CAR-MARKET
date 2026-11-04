@@ -1,24 +1,35 @@
 import { db } from "@/lib/prismadb";
-import { unstable_cache } from "next/cache";
 
-export const getFeaturedCars = unstable_cache(
-  async () => {
-    try {
-      return await db.car.findMany({
-        where: {
-          featured: true,
-        },
+export async function getFeaturedCars() {
+  try {
+    let cars = await db.car.findMany({
+      where: {
+        featured: true,
+      },
+      include: {
+        savedBy: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+    });
+
+    if (cars.length === 0) {
+      cars = await db.car.findMany({
+        take: 3,
         include: {
           savedBy: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
-    } catch (error) {
-      console.error("Failed to fetch featured cars:", error);
-      return [];
     }
-  },
-  ["featured-cars"],
-  {
-    tags: ["featured-cars"],
+
+    return cars;
+  } catch (error) {
+    console.error("Failed to fetch featured cars:", error);
+    return [];
   }
-);
+}
