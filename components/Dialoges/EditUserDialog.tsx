@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import EditUserForm from "../Forms/EditUserForm";
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 
 const EditUserDialog = ({
   open,

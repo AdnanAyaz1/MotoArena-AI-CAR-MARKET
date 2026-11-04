@@ -35,11 +35,15 @@ const AuthButtons = () => {
   const [isLoading, setIsLoading] = useState("");
 
   const handleAuth = async (provider: string) => {
-    setIsLoading(provider);
-    await signIn(provider, {
-      callbackUrl: "/",
-      redirect: false,
-    });
+    try {
+      setIsLoading(provider);
+      await signIn(provider, {
+        callbackUrl: "/",
+      });
+    } catch (error) {
+      console.error(error);
+      setIsLoading("");
+    }
   };
 
   return (

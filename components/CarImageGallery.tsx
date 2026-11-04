@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { saveCar } from "@/actions/saveCar";
 import { ExtendedCar } from "@/types/types";
 import { useSession } from "next-auth/react";
-import { UserSavedCar } from "@prisma/client/edge";
+import { UserSavedCar } from "@prisma/client";
 import CarImage from "./CardImages/CarImage";
 import { motion, AnimatePresence } from "framer-motion";
 

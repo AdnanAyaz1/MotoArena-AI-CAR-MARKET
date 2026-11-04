@@ -6,7 +6,7 @@ import {
 } from "@/lib/action-utils";
 
 import { db } from "@/lib/prismadb";
-import { CarStatus } from "@prisma/client/edge";
+import { CarStatus } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateCarStatus = async (

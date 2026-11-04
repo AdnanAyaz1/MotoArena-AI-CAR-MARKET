@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Car, ArrowLeft, CheckCircle2, MapPin, Phone, Mail } from "lucide-react";
 import TestDriveForm from "@/components/Forms/TestDriveForm";
-import { TestDriveBooking } from "@prisma/client/edge";
+import { TestDriveBooking } from "@prisma/client";
 import { ExtendedDelaersInfo } from "@/types/types";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";

@@ -6,7 +6,7 @@ import {
   serverActionResponse,
 } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 
 export const getCurrentUser = async (): Promise<
   ServerActionResponse<User | null>

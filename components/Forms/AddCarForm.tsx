@@ -34,7 +34,7 @@ import UploadCar from "../Cards/UploadCar";
 import createCar from "@/actions/createCar";
 import { handleServerActionResponse } from "@/lib/action-utils";
 import { redirect } from "next/navigation";
-import { Car } from "@prisma/client/edge";
+import { Car } from "@prisma/client";
 
 const AddCarForm = ({ carDetails }: { carDetails?: Car }) => {
   const [isLoading, setIsLoading] = useState(false);

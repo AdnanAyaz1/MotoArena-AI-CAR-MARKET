@@ -8,7 +8,7 @@ import {
 import { db } from "@/lib/prismadb";
 import { serializeCarData } from "@/lib/utils";
 import { ExtendedCar } from "@/types/types";
-import { Car, Prisma } from "@prisma/client/edge";
+import { Car, Prisma } from "@prisma/client";
 
 // Define a type for the serialized car data
 type SerializedCar = Omit<Car, "price" | "mileage"> & {

@@ -6,7 +6,7 @@ import {
   serverActionResponse,
 } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
-import { DealershipInfo, WorkingHour } from "@prisma/client/edge";
+import { DealershipInfo, WorkingHour } from "@prisma/client";
 
 export const getDealerInfo = async (): Promise<
   ServerActionResponse<

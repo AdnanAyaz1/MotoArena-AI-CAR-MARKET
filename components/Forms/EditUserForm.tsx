@@ -8,7 +8,7 @@ import { editUserSchema } from "@/lib/zod-validation-schemas";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetResults,

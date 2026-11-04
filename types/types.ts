@@ -2,9 +2,8 @@ import {
   DealershipInfo,
   TestDriveBooking,
   WorkingHour,
-} from "@prisma/client/edge";
-
-import { Car } from "@prisma/client/edge";
+  Car,
+} from "@prisma/client";
 import { User } from "next-auth";
 
 export interface userInterface {

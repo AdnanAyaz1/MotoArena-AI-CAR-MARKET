@@ -1,7 +1,7 @@
 "use client";
 import getDealershipInfo from "@/actions/createDealerShip";
 import { saveWorkingHours } from "@/actions/handleWorkingHours";
-import { WorkingHour } from "@prisma/client/edge";
+import { WorkingHour } from "@prisma/client";
 import { Loader2, Clock, Save } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";

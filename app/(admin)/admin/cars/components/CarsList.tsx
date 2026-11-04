@@ -2,7 +2,7 @@
 import { deleteCar } from "@/actions/deleteCar";
 import { getCars } from "@/actions/getCars";
 import { handleServerActionResponse } from "@/lib/action-utils";
-import { Car } from "@prisma/client/edge";
+import { Car } from "@prisma/client";
 import {
   CarIcon,
   FilterIcon,

@@ -2,7 +2,7 @@
 import { auth } from "@/auth";
 import { handleActionError, serverActionResponse } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
-import { WorkingHour } from "@prisma/client/edge";
+import { WorkingHour } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function saveWorkingHours(workingHours: WorkingHour[]) {

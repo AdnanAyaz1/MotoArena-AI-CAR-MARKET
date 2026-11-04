@@ -3,7 +3,7 @@ import { getCarById } from "@/actions/getCarById";
 import { Car, ArrowLeft, CheckCircle2, MapPin, Phone, Mail } from "lucide-react";
 import { getDealerInfo } from "@/actions/getDealerInfo";
 import TestDriveForm from "@/components/Forms/TestDriveForm";
-import { TestDriveBooking } from "@prisma/client/edge";
+import { TestDriveBooking } from "@prisma/client";
 import { ExtendedDelaersInfo } from "@/types/types";
 import { getTestDriveBookings } from "@/actions/getTestDriveBookings";
 import { formatCurrency } from "@/lib/utils";

@@ -1,6 +1,6 @@
 "use client";
 import { getAllUser } from "@/actions/getAllUsers";
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 import { Search, Users, Shield, ShieldOff, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";

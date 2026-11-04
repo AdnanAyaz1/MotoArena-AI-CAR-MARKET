@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { TableCell, TableRow } from "../ui/table";
-import { Car } from "@prisma/client/edge";
+import { Car } from "@prisma/client";
 import CarImage from "../CardImages/CarImage";
 import {
   CarIcon,

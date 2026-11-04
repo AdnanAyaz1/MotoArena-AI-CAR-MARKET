@@ -12,7 +12,7 @@ import {
 import { LogOutIcon, User } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import EditUserDialog from "../Dialoges/EditUserDialog";
-import { User as UserType } from "@prisma/client/edge";
+import { User as UserType } from "@prisma/client";
 
 const UserDropDown = ({ children }: { children: React.ReactNode }) => {
   const { data: session } = useSession();

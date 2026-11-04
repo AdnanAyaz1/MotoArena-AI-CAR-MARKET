@@ -1,15 +1,13 @@
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
+import { PrismaClient } from '@prisma/client';
 
 declare global {
-  var prisma: ReturnType<typeof prismaClientWithExtensions> | undefined;
+  var prisma: PrismaClient | undefined;
 }
 
-const prismaClientWithExtensions = () => new PrismaClient().$extends(withAccelerate())
-
-export const db = globalThis.prisma || prismaClientWithExtensions();
+export const db = globalThis.prisma || new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalThis.prisma = db;
+
 
 
 

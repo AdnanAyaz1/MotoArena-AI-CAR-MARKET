@@ -2,7 +2,7 @@
 import React from "react";
 import UserDropDown from "../DropDowns/UserDropDown";
 import Image from "next/image";
-import { User } from "@prisma/client/edge";
+import { User } from "@prisma/client";
 const UserAvatar = ({ user }: { user: User }) => {
   return (
     <UserDropDown>
