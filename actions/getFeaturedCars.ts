@@ -15,6 +15,20 @@ export async function getFeaturedCars() {
       take: 6,
     });
 
+    cars.sort((a, b) => {
+      const aImg = a.images[0]?.toLowerCase() || "";
+      const bImg = b.images[0]?.toLowerCase() || "";
+      const aIsFeature = aImg.includes("feature");
+      const bIsFeature = bImg.includes("feature");
+
+      if (aIsFeature && bIsFeature) {
+        return aImg.localeCompare(bImg);
+      }
+      if (aIsFeature) return -1;
+      if (bIsFeature) return 1;
+      return 0;
+    });
+
     if (cars.length === 0) {
       cars = await db.car.findMany({
         take: 3,

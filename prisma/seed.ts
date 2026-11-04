@@ -1,9 +1,55 @@
 import { PrismaClient } from "@prisma/client";
+import fs from "fs";
+import path from "path";
 
 const prisma = new PrismaClient();
 
-const cars = [
-  // BMW
+const carsData = [
+  {
+    company: "Bugatti",
+    model: "Chiron Super Sport",
+    year: 2024,
+    price: 3900000,
+    mileage: 500,
+    color: "Jet Black",
+    fuelType: "Gasoline",
+    transmission: "Automatic",
+    bodyType: "Coupe",
+    seats: 2,
+    description: "The Chiron Super Sport produces 1,578 hp from an 8.0L quad-turbo W16, 0-60 in 2.3s, and a top speed of 273 mph. Titanium exhaust, custom aero, and hand-crafted luxury.",
+    featured: true,
+    coverImage: "/cars/feature1.png",
+  },
+  {
+    company: "Ferrari",
+    model: "SF90 Stradale",
+    year: 2024,
+    price: 625000,
+    mileage: 1800,
+    color: "Rosso Corsa",
+    fuelType: "Hybrid",
+    transmission: "Automatic",
+    bodyType: "Coupe",
+    seats: 2,
+    description: "The SF90 Stradale combines a 769 hp V8 with three electric motors for 986 hp total. Plug-in hybrid with 15-mile electric range and 0-60 in 2.5 seconds.",
+    featured: true,
+    coverImage: "/cars/feature2.png",
+  },
+  {
+    company: "Porsche",
+    model: "911 GT3 RS",
+    year: 2024,
+    price: 241100,
+    mileage: 1500,
+    color: "Racing Yellow",
+    fuelType: "Gasoline",
+    transmission: "Automatic",
+    bodyType: "Coupe",
+    seats: 2,
+    description: "The 911 GT3 RS features a 518 hp naturally aspirated flat-6, DRS active rear wing, and aero producing 904 lbs of downforce at 177 mph. Carbon fiber body and rear-axle steering.",
+    featured: true,
+    coverImage: "/cars/feature3.png",
+  },
   {
     company: "BMW",
     model: "M4 Competition",
@@ -16,8 +62,8 @@ const cars = [
     bodyType: "Coupe",
     seats: 4,
     description: "The BMW M4 Competition delivers 503 hp from its twin-turbo inline-6, paired with an 8-speed automatic. Track-tested precision meets daily luxury with adaptive M suspension and carbon fiber accents.",
-    featured: true,
-    images: ["/cars/bmw-m8.png"],
+    featured: false,
+    coverImage: "/cars/bmw-m8.png",
   },
   {
     company: "BMW",
@@ -31,8 +77,8 @@ const cars = [
     bodyType: "SUV",
     seats: 5,
     description: "The BMW iX M60 combines 610 hp dual-motor AWD with a 111.5 kWh battery delivering 288 miles of range. Air suspension, Bowers & Wilkins audio, and a curved display define this electric flagship.",
-    featured: true,
-    images: ["/cars/porsche-cayenne.png"],
+    featured: false,
+    coverImage: "/cars/porsche-cayenne.png",
   },
   {
     company: "BMW",
@@ -47,9 +93,8 @@ const cars = [
     seats: 5,
     description: "The range-topping 760i xDrive features a 536 hp twin-turbo V8, Executive Lounge rear seating with reclining seats, and BMW Theater Screen with 31.3-inch 8K display.",
     featured: false,
-    images: ["/cars/rolls-royce-ghost.png"],
+    coverImage: "/cars/rolls-royce-ghost.png",
   },
-  // Mercedes-Benz
   {
     company: "Mercedes-Benz",
     model: "AMG GT 63 S",
@@ -62,8 +107,8 @@ const cars = [
     bodyType: "Coupe",
     seats: 4,
     description: "The AMG GT 63 S E Performance packs 831 hp from a hybrid V8 powertrain. Hand-built engine, active aerodynamics, and rear-axle steering make this the ultimate four-door supercar.",
-    featured: true,
-    images: ["/cars/mercedes-amg-gt.png"],
+    featured: false,
+    coverImage: "/cars/mercedes-amg-gt.png",
   },
   {
     company: "Mercedes-Benz",
@@ -78,7 +123,7 @@ const cars = [
     seats: 5,
     description: "The EQS 580 offers 536 hp, 350-mile range, and the optional MBUX Hyperscreen spanning 56 inches. Rear-wheel steering, Burmester 4D audio, and Level 3 autonomous driving capability.",
     featured: false,
-    images: ["/cars/mclaren-720s.png"],
+    coverImage: "/cars/mclaren-720s.png",
   },
   {
     company: "Mercedes-Benz",
@@ -93,9 +138,8 @@ const cars = [
     seats: 7,
     description: "The GLE 580 features a 489 hp twin-turbo V8 with EQ Boost mild-hybrid technology. AIRMATIC air suspension, MBUX with augmented reality navigation, and three-row seating for family luxury.",
     featured: false,
-    images: ["/cars/porsche-cayenne.png"],
+    coverImage: "/cars/porsche-cayenne.png",
   },
-  // Porsche
   {
     company: "Porsche",
     model: "Taycan Turbo S",
@@ -108,8 +152,8 @@ const cars = [
     bodyType: "Sedan",
     seats: 5,
     description: "The Taycan Turbo S delivers 750 hp with launch control, 0-60 in 2.4 seconds, and a 280-mile range. Porsche Active Suspension Management, carbon ceramic brakes, and 800V architecture.",
-    featured: true,
-    images: ["/cars/porsche-911-gt3.png"],
+    featured: false,
+    coverImage: "/cars/porsche-911-gt3.png",
   },
   {
     company: "Porsche",
@@ -124,9 +168,8 @@ const cars = [
     seats: 5,
     description: "The fastest Cayenne ever with 631 hp twin-turbo V8, 0-60 in 3.1s. Sport Chrono Package, ceramic composite brakes, and rear-axle steering set lap records for SUVs.",
     featured: false,
-    images: ["/cars/porsche-cayenne.png"],
+    coverImage: "/cars/porsche-cayenne.png",
   },
-  // Tesla
   {
     company: "Tesla",
     model: "Model S Plaid",
@@ -139,8 +182,8 @@ const cars = [
     bodyType: "Sedan",
     seats: 5,
     description: "The Model S Plaid produces 1,020 hp from tri-motor AWD, hitting 0-60 in 1.99 seconds. 396-mile range, yoke steering, 17-inch cinematic display, and track mode for the drag strip.",
-    featured: true,
-    images: ["/cars/ferrari-sf90.png"],
+    featured: false,
+    coverImage: "/cars/ferrari-sf90.png",
   },
   {
     company: "Tesla",
@@ -155,9 +198,8 @@ const cars = [
     seats: 6,
     description: "The Model X Plaid delivers 1,020 hp with falcon-wing doors, 348-mile range, and seating for up to 6. yoke steering, tri-motor torque vectoring, and tow capacity of 5,000 lbs.",
     featured: false,
-    images: ["/cars/hyundai-ioniq-5.png"],
+    coverImage: "/cars/hyundai-ioniq-5.png",
   },
-  // Audi
   {
     company: "Audi",
     model: "RS e-tron GT",
@@ -170,8 +212,8 @@ const cars = [
     bodyType: "Sedan",
     seats: 4,
     description: "The RS e-tron GT produces 637 hp with two-speed rear transmission, 0-60 in 3.1s. Adaptive air suspension, carbon roof, and 236-mile range with 270 kW DC fast charging.",
-    featured: true,
-    images: ["/cars/audi-rs-e-tron-gt.png"],
+    featured: false,
+    coverImage: "/cars/audi-rs-e-tron-gt.png",
   },
   {
     company: "Audi",
@@ -186,9 +228,8 @@ const cars = [
     seats: 5,
     description: "The RS Q8 packs 591 hp twin-turbo V8, 0-60 in 3.7s. Sport differential, predictive active suspension, and matrix LED headlights make this the fastest Audi SUV.",
     featured: false,
-    images: ["/cars/mclaren-750s.png"],
+    coverImage: "/cars/mclaren-750s.png",
   },
-  // Lamborghini
   {
     company: "Lamborghini",
     model: "Huracan Tecnica",
@@ -201,8 +242,8 @@ const cars = [
     bodyType: "Coupe",
     seats: 2,
     description: "The Huracan Tecnica features a 631 hp naturally aspirated V10, rear-wheel drive, and LDVI dynamic control. Aerodynamic body, titanium exhaust, and Corsa-tuned chassis for pure driving emotion.",
-    featured: true,
-    images: ["/cars/lamborghini-aventador.png"],
+    featured: false,
+    coverImage: "/cars/lamborghini-aventador.png",
   },
   {
     company: "Lamborghini",
@@ -217,9 +258,8 @@ const cars = [
     seats: 5,
     description: "The Urus Performante delivers 657 hp, 0-60 in 3.3s. Carbon fiber body kit, titanium exhaust, and rally-inspired design make this the fastest SUV around the Nurburgring.",
     featured: false,
-    images: ["/cars/maserati-levante.png"],
+    coverImage: "/cars/maserati-levante.png",
   },
-  // Ferrari
   {
     company: "Ferrari",
     model: "296 GTB",
@@ -232,10 +272,9 @@ const cars = [
     bodyType: "Coupe",
     seats: 2,
     description: "The 296 GTB combines a 654 hp V8 with a 164 hp electric motor for 819 hp total. Assetto Fiorano package, active aero, and 25-mile electric-only mode redefine the mid-engine supercar.",
-    featured: true,
-    images: ["/cars/ferrari-sf90.png"],
+    featured: false,
+    coverImage: "/cars/ferrari-sf90.png",
   },
-  // McLaren
   {
     company: "McLaren",
     model: "750S",
@@ -249,9 +288,8 @@ const cars = [
     seats: 2,
     description: "The 750S produces 740 hp from a twin-turbo V8, weighing just 2,815 lbs. Proactive chassis control, dihedral doors, and carbon fiber monocoque for razor-sharp handling.",
     featured: false,
-    images: ["/cars/mclaren-750s.png"],
+    coverImage: "/cars/mclaren-750s.png",
   },
-  // Aston Martin
   {
     company: "Aston Martin",
     model: "Vantage V8",
@@ -263,11 +301,10 @@ const cars = [
     transmission: "Automatic",
     bodyType: "Coupe",
     seats: 2,
-    description: "The new Vantage packs 656 hp twin-turbo V8, 0-60 in 3.4s. Electronic rear differential, carbon ceramic brakes, and a全新 interior with 10.25-inch infotainment redefine the sports car.",
+    description: "The new Vantage packs 656 hp twin-turbo V8, 0-60 in 3.4s. Electronic rear differential, carbon ceramic brakes, and a completely redesigned interior redefine the sports car.",
     featured: false,
-    images: ["/cars/aston-martin-db12.png"],
+    coverImage: "/cars/aston-martin-db12.png",
   },
-  // Range Rover
   {
     company: "Land Rover",
     model: "Range Rover Sport SV",
@@ -280,10 +317,9 @@ const cars = [
     bodyType: "SUV",
     seats: 5,
     description: "The Sport SV delivers 626 hp from a twin-turbo V8 mild-hybrid, 0-60 in 3.6s. 6D Dynamics air suspension, carbon ceramic brakes, and SV Mode for track-focused performance.",
-    featured: true,
-    images: ["/cars/porsche-cayenne.png"],
+    featured: false,
+    coverImage: "/cars/porsche-cayenne.png",
   },
-  // Toyota
   {
     company: "Toyota",
     model: "GR Supra 3.0",
@@ -297,9 +333,8 @@ const cars = [
     seats: 2,
     description: "The GR Supra 3.0 features a 382 hp turbocharged inline-6, 0-60 in 3.9s. Adaptive variable suspension, Torsen limited-slip differential, and a driver-focused cockpit.",
     featured: false,
-    images: ["/cars/toyota-supra.png"],
+    coverImage: "/cars/toyota-supra.png",
   },
-  // Honda
   {
     company: "Honda",
     model: "Civic Type R",
@@ -311,11 +346,10 @@ const cars = [
     transmission: "Manual",
     bodyType: "Sedan",
     seats: 5,
-    description: "The Civic Type R produces 315 hp from a turbocharged inline-6, rev-matching 6-speed manual, and front-wheel drive with helical LSD. Triple-exit exhaust and track-tuned dampers.",
+    description: "The Civic Type R produces 315 hp from a turbocharged inline-4, rev-matching 6-speed manual, and front-wheel drive with helical LSD. Triple-exit exhaust and track-tuned dampers.",
     featured: false,
-    images: ["/cars/honda-civic-type-r.png"],
+    coverImage: "/cars/honda-civic-type-r.png",
   },
-  // Hyundai
   {
     company: "Hyundai",
     model: "IONIQ 5 N",
@@ -327,11 +361,10 @@ const cars = [
     transmission: "Automatic",
     bodyType: "SUV",
     seats: 5,
-    description: "The IONIQ 5 N delivers 641 hp dual-motor AWD, N Grin Boost for 641 hp, and N e-Shift simulating an 8-speed DCT. Track-ready with N Battery Preconditioning and drift mode.",
-    featured: true,
-    images: ["/cars/hyundai-ioniq-5.png"],
+    description: "The IONIQ 5 N delivers 641 hp dual-motor AWD, N Grin Boost, and N e-Shift simulating an 8-speed DCT. Track-ready with N Battery Preconditioning and drift mode.",
+    featured: false,
+    coverImage: "/cars/hyundai-ioniq-5.png",
   },
-  // Rivian
   {
     company: "Rivian",
     model: "R1T Adventure",
@@ -345,41 +378,8 @@ const cars = [
     seats: 5,
     description: "The R1T Adventure offers quad-motor AWD with 835 hp, 14.9 inches of ground clearance, and a 400+ mile range. Camp Mode, air compressor, and gear tunnel for overlanding.",
     featured: false,
-    images: ["/cars/rivian-r1t.png"],
+    coverImage: "/cars/rivian-r1t.png",
   },
-  // Porsche (additional)
-  {
-    company: "Porsche",
-    model: "911 GT3 RS",
-    year: 2024,
-    price: 241100,
-    mileage: 1500,
-    color: "Racing Yellow",
-    fuelType: "Gasoline",
-    transmission: "Automatic",
-    bodyType: "Coupe",
-    seats: 2,
-    description: "The 911 GT3 RS features a 518 hp naturally aspirated flat-6, DRS active rear wing, and aero producing 904 lbs of downforce at 177 mph. Carbon fiber body and rear-axle steering.",
-    featured: true,
-    images: ["/cars/porsche-911-gt3.png"],
-  },
-  // Bugatti
-  {
-    company: "Bugatti",
-    model: "Chiron Super Sport",
-    year: 2024,
-    price: 3900000,
-    mileage: 500,
-    color: "Jet Black",
-    fuelType: "Gasoline",
-    transmission: "Automatic",
-    bodyType: "Coupe",
-    seats: 2,
-    description: "The Chiron Super Sport produces 1,578 hp from an 8.0L quad-turbo W16, 0-60 in 2.3s, and a top speed of 273 mph. Titanium exhaust, custom aero, and hand-crafted luxury.",
-    featured: true,
-    images: ["/cars/bugatti-chiron.png"],
-  },
-  // Rolls-Royce
   {
     company: "Rolls-Royce",
     model: "Cullinan",
@@ -391,9 +391,9 @@ const cars = [
     transmission: "Automatic",
     bodyType: "SUV",
     seats: 5,
-    description: "The Cullinan is Rolls-Royce's first SUV, featuring a 563 hp twin-turbo V12,Magic Carpet Ride air suspension, and coach doors. The pinnacle of luxury SUVs with hand-crafted interior.",
-    featured: true,
-    images: ["/cars/rolls-royce-ghost.png"],
+    description: "The Cullinan is Rolls-Royce's first SUV, featuring a 563 hp twin-turbo V12, Magic Carpet Ride air suspension, and coach doors. The pinnacle of luxury SUVs with hand-crafted interior.",
+    featured: false,
+    coverImage: "/cars/rolls-royce-ghost.png",
   },
   {
     company: "Rolls-Royce",
@@ -408,9 +408,8 @@ const cars = [
     seats: 5,
     description: "The Ghost features a 563 hp twin-turbo V12, Planar Suspension System, and Starlight Headliner with 1,344 fiber optic lights. Effortless elegance redefined.",
     featured: false,
-    images: ["/cars/rolls-royce-ghost.png"],
+    coverImage: "/cars/rolls-royce-ghost.png",
   },
-  // Bentley
   {
     company: "Bentley",
     model: "Bentayga",
@@ -423,8 +422,8 @@ const cars = [
     bodyType: "SUV",
     seats: 5,
     description: "The Bentayga combines 542 hp twin-turbo V8 performance with hand-crafted luxury. Diamond-knurled controls, Naim audio, and up to 7 seats for the ultimate luxury SUV.",
-    featured: true,
-    images: ["/cars/bentley-continental-gt.png"],
+    featured: false,
+    coverImage: "/cars/bentley-continental-gt.png",
   },
   {
     company: "Bentley",
@@ -437,11 +436,10 @@ const cars = [
     transmission: "Automatic",
     bodyType: "Coupe",
     seats: 4,
-    description: "The Continental GT features a 650 hp twin-turbo W8, rotating display, and diamond-in-diamond quilting. Grand touring perfection with 200+ mph capability.",
+    description: "The Continental GT features a 650 hp twin-turbo W12, rotating display, and diamond-in-diamond quilting. Grand touring perfection with 200+ mph capability.",
     featured: false,
-    images: ["/cars/bentley-continental-gt.png"],
+    coverImage: "/cars/bentley-continental-gt.png",
   },
-  // Lamborghini
   {
     company: "Lamborghini",
     model: "Aventador SVJ",
@@ -454,10 +452,9 @@ const cars = [
     bodyType: "Coupe",
     seats: 2,
     description: "The Aventador SVJ produces 770 hp from a naturally aspirated V12, ALA 2.0 active aerodynamics, and rear-wheel steering. Nurburgring record holder for production cars.",
-    featured: true,
-    images: ["/cars/lamborghini-aventador.png"],
+    featured: false,
+    coverImage: "/cars/lamborghini-aventador.png",
   },
-  // Mercedes-Benz
   {
     company: "Mercedes-Benz",
     model: "G-Class AMG G63",
@@ -470,10 +467,9 @@ const cars = [
     bodyType: "SUV",
     seats: 5,
     description: "The AMG G63 packs 577 hp twin-turbo V8, hand-built engine, three locking differentials, and iconic boxy design. Rugged luxury that conquers any terrain.",
-    featured: true,
-    images: ["/cars/mercedes-amg-gt.png"],
+    featured: false,
+    coverImage: "/cars/mercedes-amg-gt.png",
   },
-  // Aston Martin
   {
     company: "Aston Martin",
     model: "DB12",
@@ -487,25 +483,8 @@ const cars = [
     seats: 4,
     description: "The DB12 features a 671 hp twin-turbo V8, the most powerful series-production Aston Martin ever. Ultra-luxurious interior with 10.25-inch infotainment.",
     featured: false,
-    images: ["/cars/aston-martin-db12.png"],
+    coverImage: "/cars/aston-martin-db12.png",
   },
-  // Ferrari
-  {
-    company: "Ferrari",
-    model: "SF90 Stradale",
-    year: 2024,
-    price: 625000,
-    mileage: 1800,
-    color: "Rosso Corsa",
-    fuelType: "Hybrid",
-    transmission: "Automatic",
-    bodyType: "Coupe",
-    seats: 2,
-    description: "The SF90 Stradale combines a 769 hp V8 with three electric motors for 986 hp total. Plug-in hybrid with 15-mile electric range and 0-60 in 2.5 seconds.",
-    featured: true,
-    images: ["/cars/ferrari-sf90.png"],
-  },
-  // McLaren
   {
     company: "McLaren",
     model: "720S",
@@ -519,9 +498,8 @@ const cars = [
     seats: 2,
     description: "The 720S produces 710 hp from a twin-turbo V8, weighs 2,828 lbs, and hits 0-60 in 2.8 seconds. Dihedral doors, carbon fiber Monocage II, and Proactive Chassis Control.",
     featured: false,
-    images: ["/cars/mclaren-720s.png"],
+    coverImage: "/cars/mclaren-720s.png",
   },
-  // Porsche
   {
     company: "Porsche",
     model: "911 Carrera S",
@@ -535,9 +513,8 @@ const cars = [
     seats: 4,
     description: "The 911 Carrera S delivers 443 hp from a twin-turbo flat-6, PASM sport suspension, and rear-axle steering. The benchmark sports car refined to perfection.",
     featured: false,
-    images: ["/cars/porsche-911-gt3.png"],
+    coverImage: "/cars/porsche-911-gt3.png",
   },
-  // BMW
   {
     company: "BMW",
     model: "M8 Competition",
@@ -551,9 +528,8 @@ const cars = [
     seats: 4,
     description: "The M8 Competition packs 617 hp twin-turbo V8, M xDrive AWD, and carbon fiber roof. Luxury grand tourer with track-capable performance.",
     featured: false,
-    images: ["/cars/bmw-m8.png"],
+    coverImage: "/cars/bmw-m8.png",
   },
-  // Audi
   {
     company: "Audi",
     model: "R8 V10 Performance",
@@ -566,10 +542,9 @@ const cars = [
     bodyType: "Coupe",
     seats: 2,
     description: "The R8 V10 Performance produces 602 hp from a naturally aspirated 5.2L V10, quattro AWD, and magnetic ride suspension. The last of the naturally aspirated supercars.",
-    featured: true,
-    images: ["/cars/audi-rs-e-tron-gt.png"],
+    featured: false,
+    coverImage: "/cars/audi-rs-e-tron-gt.png",
   },
-  // Maserati
   {
     company: "Maserati",
     model: "GranTurismo Folgore",
@@ -583,9 +558,8 @@ const cars = [
     seats: 4,
     description: "The GranTurismo Folgore produces 751 hp from tri-motor AWD, 800V architecture, and Italian craftsmanship. The first all-electric Maserati with 250+ mile range.",
     featured: false,
-    images: ["/cars/maserati-levante.png"],
+    coverImage: "/cars/maserati-levante.png",
   },
-  // Maserati Levante
   {
     company: "Maserati",
     model: "Levante Trofeo",
@@ -599,9 +573,8 @@ const cars = [
     seats: 5,
     description: "The Levante Trofeo features a 580 hp twin-turbo V8, Q4 AWD, and skyhook suspension. Italian craftsmanship meets SUV practicality with hand-stitched leather interior.",
     featured: false,
-    images: ["/cars/maserati-levante.png"],
+    coverImage: "/cars/maserati-levante.png",
   },
-  // Lexus
   {
     company: "Lexus",
     model: "LC 500",
@@ -615,9 +588,8 @@ const cars = [
     seats: 4,
     description: "The LC 500 features a 471 hp naturally aspirated 5.0L V8, 10-speed automatic, and hand-pleated door panels. Grand touring elegance meets Japanese precision.",
     featured: false,
-    images: ["/cars/lexus-lc-500.png"],
+    coverImage: "/cars/lexus-lc-500.png",
   },
-  // Range Rover
   {
     company: "Land Rover",
     model: "Range Rover Autobiography",
@@ -631,9 +603,8 @@ const cars = [
     seats: 5,
     description: "The Range Rover Autobiography features a 523 hp twin-turbo V8, executive seating, and 48V mild-hybrid. The definitive luxury SUV with unrivaled off-road capability.",
     featured: false,
-    images: ["/cars/porsche-cayenne.png"],
+    coverImage: "/cars/porsche-cayenne.png",
   },
-  // Cadillac
   {
     company: "Cadillac",
     model: "Escalade V",
@@ -647,9 +618,8 @@ const cars = [
     seats: 7,
     description: "The Escalade V packs 682 hp supercharged V8, Magnetic Ride Control, and AKG 36-speaker audio. America's ultimate luxury SUV with Super Cruise hands-free driving.",
     featured: false,
-    images: ["/cars/maserati-levante.png"],
+    coverImage: "/cars/maserati-levante.png",
   },
-  // Lincoln
   {
     company: "Lincoln",
     model: "Navigator Black Label",
@@ -663,9 +633,8 @@ const cars = [
     seats: 7,
     description: "The Navigator Black Label features a 440 hp twin-turbo V6, 30-way adjustable seats, and Revel Ultima 20-speaker audio. American luxury at its finest.",
     featured: false,
-    images: ["/cars/rivian-r1t.png"],
+    coverImage: "/cars/rivian-r1t.png",
   },
-  // Lucid
   {
     company: "Lucid",
     model: "Air Grand Touring",
@@ -678,10 +647,9 @@ const cars = [
     bodyType: "Sedan",
     seats: 5,
     description: "The Air Grand Touring produces 819 hp, 516-mile range (longest of any EV), and 0-60 in 3.0 seconds. The most aerodynamic production car with 900V architecture.",
-    featured: true,
-    images: ["/cars/mclaren-720s.png"],
+    featured: false,
+    coverImage: "/cars/mclaren-720s.png",
   },
-  // Koenigsegg
   {
     company: "Koenigsegg",
     model: "Gemera",
@@ -694,34 +662,9 @@ const cars = [
     bodyType: "Coupe",
     seats: 4,
     description: "The Gemera produces 1,700 hp from a 2.0L 3-cylinder turbo hybrid with two electric motors. The world's first mega-GT with four seats and Koenigsegg Direct Drive.",
-    featured: true,
-    images: ["/cars/bugatti-chiron.png"],
+    featured: false,
+    coverImage: "/cars/bugatti-chiron.png",
   },
-];
-
-const carGalleryPool = [
-  "/cars/bmw-m8.png",
-  "/cars/porsche-cayenne.png",
-  "/cars/rolls-royce-ghost.png",
-  "/cars/mercedes-amg-gt.png",
-  "/cars/mclaren-720s.png",
-  "/cars/porsche-911-gt3.png",
-  "/cars/ferrari-sf90.png",
-  "/cars/hyundai-ioniq-5.png",
-  "/cars/audi-rs-e-tron-gt.png",
-  "/cars/mclaren-750s.png",
-  "/cars/lamborghini-aventador.png",
-  "/cars/maserati-levante.png",
-  "/cars/aston-martin-db12.png",
-  "/cars/toyota-supra.png",
-  "/cars/honda-civic-type-r.png",
-  "/cars/rivian-r1t.png",
-  "/cars/bugatti-chiron.png",
-  "/cars/bentley-continental-gt.png",
-  "/cars/lexus-lc-500.png",
-  "/cars/1.png",
-  "/cars/2.webp",
-  "/cars/3.jpg",
 ];
 
 async function main() {
@@ -737,41 +680,71 @@ async function main() {
     }
   }
 
-  console.log("Seeding database...");
+  const carsDir = path.join(process.cwd(), "public", "cars");
+  const allFiles = fs.readdirSync(carsDir).filter((f) => !f.includes(" - Copy"));
+  const allImages = allFiles.map((f) => `/cars/${f}`);
 
-  for (let i = 0; i < cars.length; i++) {
-    const car = cars[i];
-    const coverImage = car.images[0];
-    const otherImages = carGalleryPool.filter((img) => img !== coverImage);
-    const carImages = [
-      coverImage,
-      otherImages[i % otherImages.length],
-      otherImages[(i + 1) % otherImages.length],
-      otherImages[(i + 2) % otherImages.length],
-      otherImages[(i + 3) % otherImages.length],
-    ];
+  const galleryPool = allImages.filter((img) => !img.toLowerCase().includes("feature"));
 
-    const carData = {
-      ...car,
-      images: carImages,
+  console.log(`Discovered ${allImages.length} images in public/cars. Pool size: ${galleryPool.length}`);
+
+  console.log("Inserting and updating cars in database...");
+
+  for (let i = 0; i < carsData.length; i++) {
+    const item = carsData[i];
+    const coverImage = item.coverImage;
+
+    const otherImages = galleryPool.filter((img) => img !== coverImage);
+    const extraImages: string[] = [];
+    for (let j = 0; j < 4; j++) {
+      extraImages.push(otherImages[(i * 3 + j) % otherImages.length]);
+    }
+
+    const fullImages = [coverImage, ...extraImages];
+
+    const carPayload = {
+      company: item.company,
+      model: item.model,
+      year: item.year,
+      price: item.price,
+      mileage: item.mileage,
+      color: item.color,
+      fuelType: item.fuelType,
+      transmission: item.transmission,
+      bodyType: item.bodyType,
+      seats: item.seats,
+      description: item.description,
+      featured: item.featured,
+      images: fullImages,
     };
 
+    const id = item.model.toLowerCase().replace(/\s+/g, "-");
+
     await prisma.car.upsert({
-      where: {
-        id: car.model.toLowerCase().replace(/\s+/g, "-"),
-      },
-      update: carData,
+      where: { id },
+      update: carPayload,
       create: {
-        id: car.model.toLowerCase().replace(/\s+/g, "-"),
-        ...carData,
+        id,
+        ...carPayload,
       },
     });
-    console.log(`Created/Updated: ${car.company} ${car.model} with ${carImages.length} images`);
+
+    console.log(
+      `✓ [${i + 1}/${carsData.length}] ${item.company} ${item.model} | Cover: ${coverImage} | Total Images: ${fullImages.length} | Featured: ${item.featured}`
+    );
   }
 
-  console.log(`Seeded ${cars.length} cars`);
+  console.log("Verifying featured cars...");
+  const featured = await prisma.car.findMany({
+    where: { featured: true },
+    select: { id: true, company: true, model: true, images: true },
+  });
 
-  console.log("Seeding dealership info...");
+  console.log(`Total featured cars in database: ${featured.length}`);
+  featured.forEach((c) => {
+    console.log(`  -> ${c.company} ${c.model}: ${c.images[0]}`);
+  });
+
   const existingDealer = await prisma.dealershipInfo.findFirst();
   if (!existingDealer) {
     await prisma.dealershipInfo.create({
