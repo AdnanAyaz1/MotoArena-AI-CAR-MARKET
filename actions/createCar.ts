@@ -3,6 +3,7 @@ import { handleActionError, serverActionResponse } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
 import { extractErrorMessages } from "@/lib/utils";
 
+import { clearCarFilterCache } from "@/actions/getFilteredCars";
 import { carFormSchema } from "@/lib/zod-validation-schemas";
 import { z } from "zod";
 
@@ -50,6 +51,7 @@ export default async function createCar(values: z.infer<typeof carFormSchema>) {
         images,
       },
     });
+    clearCarFilterCache();
     return serverActionResponse("Car created successfully", true, 201, car);
   } catch (error) {
     return handleActionError(error);

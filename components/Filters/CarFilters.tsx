@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SlidersHorizontal, RotateCcw, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { SlidersHorizontal, RotateCcw, ChevronDown, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import CompanyFilter from "./FilterComponents/CompanyFilter";
@@ -25,18 +25,102 @@ export interface CarFiltersProps {
 const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const params = new URLSearchParams(searchParams.toString());
+  const [isPending, startTransition] = useTransition();
+
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState(searchParams.get("sort") || "oldest");
   const [sortByOpen, setSortByOpen] = useState(false);
+
   const [priceRange, setPriceRange] = useState<[number, number]>([
-    filters.priceRange.min,
-    filters.priceRange.max,
+    Number(searchParams.get("minPrice")) || filters.priceRange.min,
+    Number(searchParams.get("maxPrice")) || filters.priceRange.max,
   ]);
-  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
-  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(null);
-  const [selectedFuelType, setSelectedFuelType] = useState<string | null>(null);
-  const [selectedTransmission, setSelectedTransmission] = useState<string | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(searchParams.get("company"));
+  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(searchParams.get("bodyType"));
+  const [selectedFuelType, setSelectedFuelType] = useState<string | null>(searchParams.get("fuelType"));
+  const [selectedTransmission, setSelectedTransmission] = useState<string | null>(searchParams.get("transmission"));
+
+  // Keep state synchronized with URL for browser back/forward navigation
+  useEffect(() => {
+    setSortBy(searchParams.get("sort") || "oldest");
+    setSelectedCompany(searchParams.get("company"));
+    setSelectedBodyType(searchParams.get("bodyType"));
+    setSelectedFuelType(searchParams.get("fuelType"));
+    setSelectedTransmission(searchParams.get("transmission"));
+    setPriceRange([
+      Number(searchParams.get("minPrice")) || filters.priceRange.min,
+      Number(searchParams.get("maxPrice")) || filters.priceRange.max,
+    ]);
+  }, [searchParams, filters.priceRange.min, filters.priceRange.max]);
+
+  const applyParams = (updater: (params: URLSearchParams) => void) => {
+    const currentParams = new URLSearchParams(window.location.search);
+    updater(currentParams);
+    currentParams.delete("page");
+
+    const query = currentParams.toString();
+    const newUrl = query ? `?${query}` : window.location.pathname;
+
+    // 1. Instant 0ms browser URL bar update
+    window.history.replaceState(null, "", newUrl);
+
+    // 2. Non-blocking background transition for Next.js Server Component fetch
+    startTransition(() => {
+      router.replace(newUrl, { scroll: false });
+    });
+  };
+
+  const handleCompanyFilter = (value: string) => {
+    const nextVal = selectedCompany === value || value === "" ? null : value;
+    setSelectedCompany(nextVal);
+    applyParams((p) => {
+      if (nextVal) p.set("company", nextVal);
+      else p.delete("company");
+    });
+  };
+
+  const handleBodyTypeFilter = (value: string) => {
+    const nextVal = selectedBodyType === value || value === "" ? null : value;
+    setSelectedBodyType(nextVal);
+    applyParams((p) => {
+      if (nextVal) p.set("bodyType", nextVal);
+      else p.delete("bodyType");
+    });
+  };
+
+  const handleFuelTypeFilter = (value: string) => {
+    const nextVal = selectedFuelType === value || value === "" ? null : value;
+    setSelectedFuelType(nextVal);
+    applyParams((p) => {
+      if (nextVal) p.set("fuelType", nextVal);
+      else p.delete("fuelType");
+    });
+  };
+
+  const handleTransmissionFilter = (value: string) => {
+    const nextVal = selectedTransmission === value || value === "" ? null : value;
+    setSelectedTransmission(nextVal);
+    applyParams((p) => {
+      if (nextVal) p.set("transmission", nextVal);
+      else p.delete("transmission");
+    });
+  };
+
+  const handlePriceFilter = (value: [number, number]) => {
+    setPriceRange(value);
+    applyParams((p) => {
+      p.set("minPrice", value[0].toString());
+      p.set("maxPrice", value[1].toString());
+    });
+  };
+
+  const handleSortByChange = (value: string) => {
+    setSortBy(value);
+    setSortByOpen(false);
+    applyParams((p) => {
+      p.set("sort", value);
+    });
+  };
 
   const clearFilters = () => {
     setPriceRange([filters.priceRange.min, filters.priceRange.max]);
@@ -46,73 +130,29 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
     setSelectedTransmission(null);
     setSortBy("oldest");
 
-    const currentSearch = searchParams.get("search");
-    params.delete("company");
-    params.delete("bodyType");
-    params.delete("fuelType");
-    params.delete("transmission");
-    params.delete("minPrice");
-    params.delete("maxPrice");
-    params.delete("sort");
-    params.delete("page");
+    const currentParams = new URLSearchParams(window.location.search);
+    const currentSearch = currentParams.get("search");
+    currentParams.delete("company");
+    currentParams.delete("bodyType");
+    currentParams.delete("fuelType");
+    currentParams.delete("transmission");
+    currentParams.delete("minPrice");
+    currentParams.delete("maxPrice");
+    currentParams.delete("sort");
+    currentParams.delete("page");
 
     if (currentSearch) {
-      params.set("search", currentSearch);
+      currentParams.set("search", currentSearch);
     }
-    router.push(`?${params.toString()}`, { scroll: false });
-  };
 
-  useEffect(() => {
-    const sortValue = searchParams.get("sort");
-    if (sortValue) setSortBy(sortValue);
-    else setSortBy("oldest");
-    const companyParam = searchParams.get("company");
-    const bodyTypeParam = searchParams.get("bodyType");
-    const fuelTypeParam = searchParams.get("fuelType");
-    const transmissionParam = searchParams.get("transmission");
+    const query = currentParams.toString();
+    const newUrl = query ? `?${query}` : window.location.pathname;
 
-    if (companyParam) setSelectedCompany(companyParam);
-    if (bodyTypeParam) setSelectedBodyType(bodyTypeParam);
-    if (fuelTypeParam) setSelectedFuelType(fuelTypeParam);
-    if (transmissionParam) setSelectedTransmission(transmissionParam);
-  }, [searchParams]);
+    window.history.replaceState(null, "", newUrl);
 
-  const handleFilter = (type: string, value: string) => {
-    if (value === "") {
-      params.delete(type);
-    } else if (params.get(type) !== value) {
-      params.set(type, value);
-    } else {
-      params.delete(type);
-    }
-    router.push(`?${params.toString()}`);
-  };
-
-  const handleCompanyFilter = (value: string) => {
-    handleFilter("company", value);
-    setSelectedCompany(selectedCompany === value ? null : value);
-  };
-
-  const handleBodyTypeFilter = (value: string) => {
-    handleFilter("bodyType", value);
-    setSelectedBodyType(selectedBodyType === value ? null : value);
-  };
-
-  const handleFuelTypeFilter = (value: string) => {
-    handleFilter("fuelType", value);
-    setSelectedFuelType(selectedFuelType === value ? null : value);
-  };
-
-  const handleTransmissionFilter = (value: string) => {
-    handleFilter("transmission", value);
-    setSelectedTransmission(selectedTransmission === value ? null : value);
-  };
-
-  const handlePriceFilter = (value: [number, number]) => {
-    setPriceRange(value);
-    params.set("minPrice", value[0].toString());
-    params.set("maxPrice", value[1].toString());
-    router.push(`?${params.toString()}`, { scroll: false });
+    startTransition(() => {
+      router.replace(newUrl, { scroll: false });
+    });
   };
 
   const sortOptions = [
@@ -121,14 +161,6 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
     { value: "priceAsc", label: "Price: Low to High" },
     { value: "priceDesc", label: "Price: High to Low" },
   ];
-
-  const handleSortByChange = (value: string) => {
-    setSortBy(value);
-    setSortByOpen(false);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", value);
-    router.push(`?${params.toString()}`, { scroll: false });
-  };
 
   const sortOptionsRef = useRef<HTMLDivElement>(null);
 
@@ -193,12 +225,19 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
                   {activeFilterCount}
                 </span>
               )}
+              {isPending && <Loader2 className="w-3.5 h-3.5 text-primary animate-spin ml-1" />}
             </button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:max-w-md overflow-y-auto bg-[#0e1417] border-white/[0.06]">
             <SheetHeader>
-              <SheetTitle className="text-on-surface font-[family-name:var(--font-sora)] text-lg">
-                Filters
+              <SheetTitle className="text-on-surface font-[family-name:var(--font-sora)] text-lg flex items-center justify-between">
+                <span>Filters</span>
+                {isPending && (
+                  <span className="flex items-center gap-1.5 text-xs text-primary font-[family-name:var(--font-jetbrains-mono)]">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Updating
+                  </span>
+                )}
               </SheetTitle>
             </SheetHeader>
             <FilterContent />
@@ -254,6 +293,11 @@ const CarFilters = ({ filters }: { filters: CarFiltersProps }) => {
                 {activeFilterCount > 0 && (
                   <span className="w-5 h-5 rounded-full gradient-bg text-black text-[10px] font-bold flex items-center justify-center">
                     {activeFilterCount}
+                  </span>
+                )}
+                {isPending && (
+                  <span className="flex items-center gap-1 text-[11px] text-primary font-[family-name:var(--font-jetbrains-mono)] animate-pulse ml-1">
+                    <Loader2 className="w-3 h-3 animate-spin" />
                   </span>
                 )}
               </div>

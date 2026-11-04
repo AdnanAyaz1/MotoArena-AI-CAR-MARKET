@@ -1,7 +1,6 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface FuelTypeFilterProps {
@@ -15,13 +14,11 @@ const FuelTypeFilter = ({
   selectedFuelType,
   onFuelTypeChange,
 }: FuelTypeFilterProps) => {
-  const searchParams = useSearchParams();
-
   return (
     <div className="space-y-3 p-4 border-b border-white/[0.06]">
       <h4 className="text-xs font-bold font-[family-name:var(--font-jetbrains-mono)] text-on-surface-variant uppercase tracking-wider flex justify-between">
         <span>Fuel Type</span>
-        {searchParams.get("fuelType") && (
+        {selectedFuelType && (
           <button
             className="text-primary flex items-center cursor-pointer hover:text-secondary transition-colors"
             onClick={() => onFuelTypeChange("")}

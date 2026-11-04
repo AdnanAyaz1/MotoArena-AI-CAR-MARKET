@@ -30,6 +30,18 @@ function scoreCar(car: ExtendedCar, query: string, terms: string[]) {
   return score;
 }
 
+const filterCache = new Map<
+  string,
+  {
+    result: ServerActionResponse<ExtendedCar[]>;
+    timestamp: number;
+  }
+>();
+
+export function clearCarFilterCache() {
+  filterCache.clear();
+}
+
 export async function getFilteredCars(params: {
   company?: string;
   bodyType?: string;
@@ -42,6 +54,11 @@ export async function getFilteredCars(params: {
   search?: string;
 }): Promise<ServerActionResponse<ExtendedCar[]>> {
   try {
+    const cacheKey = JSON.stringify(params);
+    const cached = filterCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < 60_000) {
+      return cached.result;
+    }
     const {
       company,
       bodyType,
@@ -172,13 +189,15 @@ export async function getFilteredCars(params: {
       const noOfPages = Math.ceil(totalCars / limit);
       const paginatedCars = matchingCars.slice(skip, skip + limit);
 
-      return serverActionResponse(
+      const response = serverActionResponse(
         "Cars fetched successfully",
         true,
         200,
         paginatedCars,
         noOfPages
       );
+      filterCache.set(cacheKey, { result: response, timestamp: Date.now() });
+      return response;
     }
 
     const totalCars = await db.car.count({ where: filterQuery });
@@ -194,13 +213,15 @@ export async function getFilteredCars(params: {
       },
     })) as ExtendedCar[];
 
-    return serverActionResponse(
+    const response = serverActionResponse(
       "Cars fetched successfully",
       true,
       200,
       cars,
       noOfPages
     );
+    filterCache.set(cacheKey, { result: response, timestamp: Date.now() });
+    return response;
   } catch (error) {
     return handleActionError(error);
   }

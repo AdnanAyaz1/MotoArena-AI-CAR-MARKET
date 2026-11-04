@@ -3,17 +3,23 @@
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 export const PaginationComponent = ({ noOfPages }: { noOfPages: number }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
   const currentPage = Number(searchParams.get("page")) || 1;
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > noOfPages) return;
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     params.set("page", String(page));
-    router.push(`?${params.toString()}`, { scroll: false });
+    const newUrl = `?${params.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+    startTransition(() => {
+      router.replace(newUrl, { scroll: false });
+    });
   };
 
   const pageGroupSize = 10;

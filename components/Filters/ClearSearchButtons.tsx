@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
+import { useTransition } from "react";
 
 interface ClearSearchButtonsProps {
   search: string;
@@ -9,11 +10,17 @@ interface ClearSearchButtonsProps {
 
 const ClearSearchButtons = ({ search }: ClearSearchButtonsProps) => {
   const router = useRouter();
+  const [, startTransition] = useTransition();
 
   const handleClearSearch = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete("search");
-    router.push(`?${params.toString()}`);
+    params.delete("page");
+    const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+    startTransition(() => {
+      router.replace(newUrl, { scroll: false });
+    });
   };
 
   return (

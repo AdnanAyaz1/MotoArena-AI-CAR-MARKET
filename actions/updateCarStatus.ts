@@ -8,6 +8,7 @@ import {
 import { db } from "@/lib/prismadb";
 import { CarStatus } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { clearCarFilterCache } from "@/actions/getFilteredCars";
 
 export const updateCarStatus = async (
   carId: string,
@@ -35,6 +36,7 @@ export const updateCarStatus = async (
 
     // Invalidate the featured cars cache.
     revalidateTag("featured-cars");
+    clearCarFilterCache();
 
     return serverActionResponse(
       "Car status updated successfully",
