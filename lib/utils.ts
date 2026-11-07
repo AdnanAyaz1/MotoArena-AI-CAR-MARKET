@@ -54,7 +54,8 @@ export const stripNumericUnits = (
   const str = String(value).trim();
   if (!str) return "";
 
-  const kMatch = str.match(/(\d+(?:\.\d+)?)\s*k\b/i);
+  const withoutCommas = str.replace(/,/g, "");
+  const kMatch = withoutCommas.match(/(\d+(?:\.\d+)?)\s*k\b/i);
   if (kMatch) {
     const multiplied = parseFloat(kMatch[1]) * 1000;
     if (!isNaN(multiplied)) {
@@ -62,7 +63,6 @@ export const stripNumericUnits = (
     }
   }
 
-  const withoutCommas = str.replace(/,/g, "");
   const match = withoutCommas.match(/\d+(?:\.\d+)?/);
   if (!match) return "";
 

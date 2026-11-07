@@ -36,7 +36,8 @@ export default async function createCar(values: z.infer<typeof carFormSchema>) {
     const cleanYear = parseInt(stripNumericUnits(year, { integerOnly: true }));
     const cleanPrice = parseFloat(stripNumericUnits(price));
     const cleanMileage = parseInt(stripNumericUnits(mileage, { integerOnly: true }));
-    const cleanSeats = seats ? parseInt(stripNumericUnits(seats, { integerOnly: true })) : null;
+    const rawSeats = seats ? parseInt(stripNumericUnits(seats, { integerOnly: true })) : null;
+    const cleanSeats = rawSeats !== null && !isNaN(rawSeats) ? rawSeats : null;
 
     // create the car
     const car = await db.car.create({
