@@ -1,7 +1,7 @@
 "use server";
 import { handleActionError, serverActionResponse } from "@/lib/action-utils";
 import { db } from "@/lib/prismadb";
-import { extractErrorMessages } from "@/lib/utils";
+import { extractErrorMessages, stripNumericUnits } from "@/lib/utils";
 
 import { clearCarFilterCache } from "@/actions/getFilteredCars";
 import { carFormSchema } from "@/lib/zod-validation-schemas";
@@ -33,19 +33,24 @@ export default async function createCar(values: z.infer<typeof carFormSchema>) {
   }
 
   try {
+    const cleanYear = parseInt(stripNumericUnits(year, { integerOnly: true }));
+    const cleanPrice = parseFloat(stripNumericUnits(price));
+    const cleanMileage = parseInt(stripNumericUnits(mileage, { integerOnly: true }));
+    const cleanSeats = seats ? parseInt(stripNumericUnits(seats, { integerOnly: true })) : null;
+
     // create the car
     const car = await db.car.create({
       data: {
         company,
         model,
-        year: parseInt(year),
-        price: parseFloat(price),
-        mileage: parseInt(mileage),
+        year: cleanYear,
+        price: cleanPrice,
+        mileage: cleanMileage,
         color,
         fuelType,
         transmission,
         bodyType,
-        seats: seats ? parseInt(seats) : null,
+        seats: cleanSeats,
         description,
         featured,
         images,

@@ -1,6 +1,7 @@
 "use server";
 import { handleActionError, serverActionResponse } from "@/lib/action-utils";
 import { createUserContent, GoogleGenAI } from "@google/genai";
+import { stripNumericUnits } from "@/lib/utils";
 
 async function fileToBase64(file: File) {
   const bytes = await file.arrayBuffer();
@@ -24,35 +25,40 @@ export async function processCarImageWithAI(file: File) {
     const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
 
     const prompt = `
-      Analyze this car image (the car image is a url of an image.. i am using cloudinary to store the image) and extract the following details generate the description upto 6 sentences:
-      - Company (manufacturer)
-      - Model
-      - Approximate year
-      - Color
-      - Body type (SUV, Sedan, etc.)
-      - Mileage
-      - Fuel type (best guess)
-      - Transmission type (best guess)
-      - Estimated price
+      Analyze this car image and extract the following details (generate a listing description up to 6 sentences):
+      - Company (manufacturer name, e.g. Toyota, BMW, Honda)
+      - Model (model name, e.g. Camry, 3 Series, Civic)
+      - Approximate year (4-digit number only, e.g. 2023)
+      - Color (primary color name, e.g. Black, White, Silver)
+      - Body type (must be one of: SUV, Sedan, Hatchback, Convertible, Coupe, Wagon, Pickup)
+      - Mileage (plain integer number of miles ONLY, strictly NO units like "miles" or "mi", NO commas, e.g. 15000, not 15000 miles)
+      - Fuel type (must be one of: Petrol, Diesel, Electric, Hybrid, Plug-in Hybrid)
+      - Transmission type (must be one of: Automatic, Manual, Semi-Automatic)
+      - Estimated price (plain number ONLY, strictly NO currency symbols like $, NO commas, NO words, e.g. 28999, not $28,999)
       - Short description for a car listing
 
       **Format the response as JSON only (no extra text), like this:**
       {
-        "company": "",
-        "model": "",
-        "year": 0000,
-        "color": "",
-        "price": "",
-        "mileage": "",
-        "bodyType": "",
-        "fuelType": "",
-        "transmission": "",
-        "description": "",
-        "confidence": 0.0
+        "company": "Toyota",
+        "model": "Camry",
+        "year": 2023,
+        "color": "White",
+        "price": 28999,
+        "mileage": 15000,
+        "bodyType": "Sedan",
+        "fuelType": "Petrol",
+        "transmission": "Automatic",
+        "description": "Well-maintained vehicle with premium features and clean condition.",
+        "confidence": 0.95
       }
 
-      Ensure confidence is a number between 0 and 1.
-      Respond with JSON only, no extra text.
+      CRITICAL RULES:
+      - Never include units or currency symbols in numerical fields:
+        * "price" must be a pure number without "$" or currency symbol (e.g. 25000, not $25,000)
+        * "mileage" must be a pure integer number without "miles", "mi", or "km" (e.g. 15000, not 15000 miles)
+        * "year" must be a 4-digit integer (e.g. 2023)
+      - Ensure confidence is a number between 0 and 1.
+      - Respond with JSON only, no markdown wrapping, no extra text.
     `;
 
     const base64Image = await fileToBase64(file);
@@ -118,6 +124,19 @@ export async function processCarImageWithAI(file: File) {
         400,
         carDetails
       );
+    }
+
+    if (carDetails.price !== undefined && carDetails.price !== null) {
+      carDetails.price = stripNumericUnits(carDetails.price);
+    }
+    if (carDetails.mileage !== undefined && carDetails.mileage !== null) {
+      carDetails.mileage = stripNumericUnits(carDetails.mileage, { integerOnly: true });
+    }
+    if (carDetails.year !== undefined && carDetails.year !== null) {
+      carDetails.year = stripNumericUnits(carDetails.year, { integerOnly: true });
+    }
+    if (carDetails.seats !== undefined && carDetails.seats !== null) {
+      carDetails.seats = stripNumericUnits(carDetails.seats, { integerOnly: true });
     }
 
     return serverActionResponse(

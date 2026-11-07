@@ -45,3 +45,34 @@ export const inputClass = (error?: boolean | string) => {
     error ? "border-red-500/50" : "border-white/[0.06]"
   }`;
 };
+
+export const stripNumericUnits = (
+  value: string | number | null | undefined,
+  options?: { integerOnly?: boolean }
+): string => {
+  if (value === null || value === undefined) return "";
+  const str = String(value).trim();
+  if (!str) return "";
+
+  const kMatch = str.match(/(\d+(?:\.\d+)?)\s*k\b/i);
+  if (kMatch) {
+    const multiplied = parseFloat(kMatch[1]) * 1000;
+    if (!isNaN(multiplied)) {
+      return String(options?.integerOnly ? Math.round(multiplied) : multiplied);
+    }
+  }
+
+  const withoutCommas = str.replace(/,/g, "");
+  const match = withoutCommas.match(/\d+(?:\.\d+)?/);
+  if (!match) return "";
+
+  const numStr = match[0];
+  const parsed = parseFloat(numStr);
+  if (isNaN(parsed)) return "";
+
+  if (options?.integerOnly) {
+    return String(Math.round(parsed));
+  }
+
+  return Number.isInteger(parsed) ? String(parsed) : numStr;
+};

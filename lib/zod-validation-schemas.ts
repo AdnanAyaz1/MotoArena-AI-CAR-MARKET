@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { stripNumericUnits } from "./utils";
 
 export const signUpSchema = z
   .object({
@@ -64,8 +65,14 @@ export const carFormSchema = z.object({
     const year = parseInt(val);
     return !isNaN(year) && year >= 1900 && year <= new Date().getFullYear() + 1;
   }, "Valid year required"),
-  price: z.string().min(1, "Price is required"),
-  mileage: z.string().min(1, "Mileage is required"),
+  price: z.string().min(1, "Price is required").refine((val) => {
+    const num = parseFloat(stripNumericUnits(val));
+    return !isNaN(num) && num > 0;
+  }, "Valid price required"),
+  mileage: z.string().min(1, "Mileage is required").refine((val) => {
+    const num = parseInt(stripNumericUnits(val, { integerOnly: true }));
+    return !isNaN(num) && num >= 0;
+  }, "Valid mileage required"),
   color: z.string().min(1, "Color is required"),
   fuelType: z.string().min(1, "Fuel type is required"),
   transmission: z.string().min(1, "Transmission is required"),

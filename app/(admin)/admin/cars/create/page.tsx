@@ -28,7 +28,7 @@ import { processCarImageWithAI } from "@/actions/createCarAi";
 import { FormSection } from "@/components/ui/FormSection";
 import { FormField } from "@/components/ui/FormField";
 import { SelectField } from "@/components/ui/SelectField";
-import { inputClass } from "@/lib/utils";
+import { inputClass, stripNumericUnits } from "@/lib/utils";
 import { CreateCarFormData, defaultCreateCarFormData } from "@/types/car";
 
 export default function CreateCarPage() {
@@ -49,6 +49,31 @@ export default function CreateCarPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "price") {
+      const cleaned = stripNumericUnits(value);
+      if (cleaned !== value) {
+        setFormData((prev) => ({ ...prev, price: cleaned }));
+      }
+    } else if (name === "mileage") {
+      const cleaned = stripNumericUnits(value, { integerOnly: true });
+      if (cleaned !== value) {
+        setFormData((prev) => ({ ...prev, mileage: cleaned }));
+      }
+    } else if (name === "year") {
+      const cleaned = stripNumericUnits(value, { integerOnly: true });
+      if (cleaned !== value) {
+        setFormData((prev) => ({ ...prev, year: cleaned }));
+      }
+    } else if (name === "seats") {
+      const cleaned = stripNumericUnits(value, { integerOnly: true });
+      if (cleaned !== value) {
+        setFormData((prev) => ({ ...prev, seats: cleaned }));
+      }
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,17 +115,35 @@ export default function CreateCarPage() {
       const res = await processCarImageWithAI(aiFile);
       if (res.success && res.data) {
         const d = res.data;
+        const cleanedPrice = stripNumericUnits(d.price);
+        const cleanedMileage = stripNumericUnits(d.mileage, { integerOnly: true });
+        const cleanedYear = stripNumericUnits(d.year, { integerOnly: true });
+        const cleanedSeats = d.seats ? stripNumericUnits(d.seats, { integerOnly: true }) : "";
+
+        const matchedFuelType =
+          fuelType.find((f) => f.toLowerCase() === (d.fuelType || "").toLowerCase()) ||
+          (d.fuelType && /gas(oline)?/i.test(d.fuelType) ? "Petrol" : d.fuelType);
+
+        const matchedTransmission =
+          transmission.find((t) => t.toLowerCase() === (d.transmission || "").toLowerCase()) ||
+          d.transmission;
+
+        const matchedBodyType =
+          bodyType.find((b) => b.toLowerCase() === (d.bodyType || "").toLowerCase()) ||
+          d.bodyType;
+
         setFormData((prev) => ({
           ...prev,
           company: d.company || prev.company,
           model: d.model || prev.model,
-          year: d.year ? String(d.year) : prev.year,
+          year: cleanedYear !== "" ? cleanedYear : prev.year,
           color: d.color || prev.color,
-          price: d.price ? String(d.price) : prev.price,
-          mileage: d.mileage ? String(d.mileage) : prev.mileage,
-          bodyType: d.bodyType || prev.bodyType,
-          fuelType: d.fuelType || prev.fuelType,
-          transmission: d.transmission || prev.transmission,
+          price: cleanedPrice !== "" ? cleanedPrice : prev.price,
+          mileage: cleanedMileage !== "" ? cleanedMileage : prev.mileage,
+          seats: cleanedSeats !== "" ? cleanedSeats : prev.seats,
+          bodyType: matchedBodyType || prev.bodyType,
+          fuelType: matchedFuelType || prev.fuelType,
+          transmission: matchedTransmission || prev.transmission,
           description: d.description || prev.description,
         }));
         setAiConfidence(d.confidence || null);
@@ -122,7 +165,15 @@ export default function CreateCarPage() {
       return;
     }
 
-    const validated = carFormSchema.safeParse(formData);
+    const cleanedData = {
+      ...formData,
+      price: stripNumericUnits(formData.price),
+      mileage: stripNumericUnits(formData.mileage, { integerOnly: true }),
+      year: stripNumericUnits(formData.year, { integerOnly: true }),
+      seats: formData.seats ? stripNumericUnits(formData.seats, { integerOnly: true }) : "",
+    };
+
+    const validated = carFormSchema.safeParse(cleanedData);
     if (!validated.success) {
       const fieldErrors: Record<string, string> = {};
       Object.entries(validated.error.flatten().fieldErrors).forEach(([key, msgs]) => {
@@ -132,6 +183,7 @@ export default function CreateCarPage() {
       toast.error("Please fix the errors in the form");
       return;
     }
+    setFormData(cleanedData);
     setSubmitting(true);
     try {
       const res = await createCar(validated.data);
@@ -388,6 +440,7 @@ export default function CreateCarPage() {
                     name="year"
                     value={formData.year}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="e.g. 2024"
                     className={inputClass(errors.year)}
                   />
@@ -406,6 +459,7 @@ export default function CreateCarPage() {
                     name="seats"
                     value={formData.seats}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="e.g. 5"
                     className={inputClass(errors.seats)}
                   />
@@ -421,6 +475,7 @@ export default function CreateCarPage() {
                     name="price"
                     value={formData.price}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="e.g. 28999"
                     className={inputClass(errors.price)}
                   />
@@ -430,6 +485,7 @@ export default function CreateCarPage() {
                     name="mileage"
                     value={formData.mileage}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="e.g. 15000"
                     className={inputClass(errors.mileage)}
                   />
